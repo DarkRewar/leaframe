@@ -1,6 +1,6 @@
 @charset "CP850";
 /*!
- * Leaframe 0.3 (http://leaframe.lignusdev.com)
+ * Leaframe 0.35 (http://leaframe.lignusdev.com)
  * Copyright 2014 Curtis Pelissier
  * Licensed under MIT (https://github.com/DarkRewar/leaframe/blob/master/~/doc/licence)
  */
@@ -75,22 +75,12 @@ h6 {
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   border-radius: 5px; }
-  .rounded > * {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    border-radius: 5px; }
 
 .round {
   -webkit-border-radius: 35px;
   -moz-border-radius: 35px;
   -ms-border-radius: 35px;
   border-radius: 35px; }
-  .round > * {
-    -webkit-border-radius: 35px;
-    -moz-border-radius: 35px;
-    -ms-border-radius: 35px;
-    border-radius: 35px; }
 
 .small {
   text-transform: capitalize;
@@ -663,10 +653,10 @@ li.block-img, .theater .theater-links li {
     .tabs .tab-content .content.active {
       display: block; }
   .tabs.to-top .tab-panel ul {
-    border-bottom: 1px solid #777; }
+    border-bottom: 1px solid #bbbbbb; }
     .tabs.to-top .tab-panel ul li {
       border-style: solid;
-      border-color: #777;
+      border-color: #bbbbbb;
       border-radius: 3px 3px 0 0;
       border-width: 0 0 0 0;
       margin: 0 4px; }
@@ -682,10 +672,10 @@ li.block-img, .theater .theater-links li {
       .tabs.to-top .tab-panel ul li:last-child {
         margin-right: 0; }
   .tabs.to-bottom .tab-panel ul {
-    border-top: 1px solid #777; }
+    border-top: 1px solid #bbbbbb; }
     .tabs.to-bottom .tab-panel ul li {
       border-style: solid;
-      border-color: #777;
+      border-color: #bbbbbb;
       border-radius: 0 0 3px 3px;
       border-width: 0 0 0 0;
       margin: 0 4px; }
@@ -714,7 +704,7 @@ li.block-img, .theater .theater-links li {
         width: 100%;
         border-radius: 3px 0 0 3px;
         border-style: solid;
-        border-color: #777;
+        border-color: #bbbbbb;
         border-width: 0 1px 0 0; }
         .tabs.to-left .tab-panel ul li.active {
           margin: 0;
@@ -741,7 +731,7 @@ li.block-img, .theater .theater-links li {
         width: 100%;
         border-radius: 0 3px 3px 0;
         border-style: solid;
-        border-color: #777;
+        border-color: #bbbbbb;
         border-width: 0 0 0 1px; }
         .tabs.to-right .tab-panel ul li.active {
           margin: 0;
@@ -763,3 +753,35 @@ li.block-img, .theater .theater-links li {
   padding: 3px;
   width: 100%;
   max-width: 150px; }
+
+.accordeon .ac-section {
+  border: 1px solid #bbbbbb;
+  position: relative;
+  padding: 0px 20px;
+  margin: 3px auto;
+  background: #F7F7F7;
+  display: block; }
+  .accordeon .ac-section .ac-head {
+    padding: 5px 0px;
+    cursor: pointer; }
+  .accordeon .ac-section .ac-body {
+    border-top: 1px solid #bbbbbb;
+    padding: 2px 0px;
+    display: none; }
+  .accordeon .ac-section:hover {
+    border: 1px solid #777777;
+    background: #EEE; }
+  .accordeon .ac-section.active {
+    background: #FFF; }
+    .accordeon .ac-section.active .ac-body {
+      display: block; }
+    .accordeon .ac-section.active:hover {
+      border: 1px solid #bbbbbb;
+      background: inherit; }
+
+footer {
+  border-top: 1px solid #bbbbbb; }
+  footer.large {
+    background: #EEE;
+    min-height: 200px;
+    padding: 20px 0; }

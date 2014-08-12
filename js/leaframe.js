@@ -1,10 +1,14 @@
 /*!
- * Leaframe 0.3 (http://leaframe.lignusdev.com)
+ * Leaframe 0.35 (http://leaframe.lignusdev.com)
  * Copyright 2014 Curtis Pelissier
  * Licensed under MIT (https://github.com/DarkRewar/leaframe/blob/master/~/doc/licence)
  */
  if (typeof jQuery !== 'undefined') {
     $.fn.extend({
+        toggled: function(sens) {
+            if(sens == "width") $(this).animate({width:"toggle"}, 400);
+            else $(this).animate({height:"toggle"}, 400);
+        },
         overflow: function(type) {
             if ($(this).css('overflow') != 'hidden') {
                 $(this).css({
@@ -143,6 +147,24 @@
                         });
                 }
             }
+        },
+        accordeon: function(){
+            var parent = $(this).parent('.accordeon');
+            var sonActive = parent.find('.active');
+            var sonHide = sonActive.find('.ac-body');
+
+            sonHide.animate({height:"toggle"}, 400, function(){
+                sonActive.removeClass('active');
+            });
+
+            if(!$(this).hasClass('active')){
+                var selfActive = $(this).find('.ac-body');
+                var self = $(this);
+
+                selfActive.animate({height:"toggle"}, 400, function(){
+                    self.addClass('active');
+                });
+            }
         }
     });
     $(document).ready(function() {
@@ -180,6 +202,10 @@
             var id = $(this).attr('show');
             e.preventDefault();
             $('#' + id).panel();
+        }).on('click', '.accordeon>.ac-section>.ac-head', function(e) {
+            var parent = $(this).parent('.ac-section');
+            e.preventDefault();
+            $(parent).accordeon();
         });
 
         $(window).scroll(function(){ // scroll event
