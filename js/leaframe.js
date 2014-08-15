@@ -1,13 +1,17 @@
 /*!
- * Leaframe 0.35 (http://leaframe.lignusdev.com)
+ * Leaframe 0.4 (http://leaframe.lignusdev.com)
  * Copyright 2014 Curtis Pelissier
  * Licensed under MIT (https://github.com/DarkRewar/leaframe/blob/master/~/doc/licence)
  */
- if (typeof jQuery !== 'undefined') {
+if (typeof jQuery !== 'undefined') {
     $.fn.extend({
         toggled: function(sens) {
-            if(sens == "width") $(this).animate({width:"toggle"}, 400);
-            else $(this).animate({height:"toggle"}, 400);
+            if (sens == "width") $(this).animate({
+                width: "toggle"
+            }, 400);
+            else $(this).animate({
+                height: "toggle"
+            }, 400);
         },
         overflow: function(type) {
             if ($(this).css('overflow') != 'hidden') {
@@ -111,57 +115,51 @@
         panel: function() {
             var parent = $(this).parents('.tabs');
             var to_show = parent.find($(this));
-            if(to_show.is(':visible')){
+            if (to_show.is(':visible')) {
                 return;
             }
-            parent
-                .find('.content.active')
-                .fadeOut(350, function(){
-                    $(this).removeClass('active');
-                    var id_tab = $(this).attr('id');
-                    $(parent)
-                        .find('[show="'+id_tab+'"]')
-                        .removeClass('active');
-                    id_tab = $(to_show).attr('id');
-                        $(parent)
-                            .find('[show="'+id_tab+'"]')
-                            .addClass('active');
-                    to_show.fadeIn(350, function(){
-                        $(this).addClass('active');
-                    });
+            parent.find('.content.active').fadeOut(350, function() {
+                $(this).removeClass('active');
+                var id_tab = $(this).attr('id');
+                $(parent).find('[show="' + id_tab + '"]').removeClass('active');
+                id_tab = $(to_show).attr('id');
+                $(parent).find('[show="' + id_tab + '"]').addClass('active');
+                to_show.fadeIn(350, function() {
+                    $(this).addClass('active');
+                });
             });
         },
-        affix: function(){
-            if($(this).length > 0){
-                $(this).css('position','static');
+        affix: function() {
+            if ($(this).length > 0) {
+                $(this).css('position', 'static');
                 var affix = $(this).offset().top;
                 var widthBox = $(this).innerWidth();
-                var topDecal = ( !!$(this).attr('decal-top'))?parseInt($(this).attr('decal-top')):0;
+                var topDecal = ( !! $(this).attr('decal-top')) ? parseInt($(this).attr('decal-top')) : 0;
                 var windowTop = $(window).scrollTop() + topDecal;
                 if (affix < windowTop) {
-                    $(this)
-                        .css({
-                            position: 'fixed',
-                            top: topDecal,
-                            'width': widthBox
-                        });
+                    $(this).css({
+                        position: 'fixed',
+                        top: topDecal,
+                        'width': widthBox
+                    });
                 }
             }
         },
-        accordeon: function(){
+        accordeon: function() {
             var parent = $(this).parent('.accordeon');
             var sonActive = parent.find('.active');
             var sonHide = sonActive.find('.ac-body');
-
-            sonHide.animate({height:"toggle"}, 400, function(){
+            sonHide.animate({
+                height: "toggle"
+            }, 400, function() {
                 sonActive.removeClass('active');
             });
-
-            if(!$(this).hasClass('active')){
+            if (!$(this).hasClass('active')) {
                 var selfActive = $(this).find('.ac-body');
                 var self = $(this);
-
-                selfActive.animate({height:"toggle"}, 400, function(){
+                selfActive.animate({
+                    height: "toggle"
+                }, 400, function() {
                     self.addClass('active');
                 });
             }
@@ -207,8 +205,7 @@
             e.preventDefault();
             $(parent).accordeon();
         });
-
-        $(window).scroll(function(){ // scroll event
+        $(window).scroll(function() { // scroll event
             $('.affix').affix();
         });
     });

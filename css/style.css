@@ -1,6 +1,6 @@
 @charset "CP850";
 /*!
- * Leaframe 0.35 (http://leaframe.lignusdev.com)
+ * Leaframe 0.4 (http://leaframe.lignusdev.com)
  * Copyright 2014 Curtis Pelissier
  * Licensed under MIT (https://github.com/DarkRewar/leaframe/blob/master/~/doc/licence)
  */
@@ -70,7 +70,7 @@ h6 {
 
 /* Les particularités du Framework */
 /* Partie 1, les petits détails */
-.rounded {
+.rounded, .breadcrumbs.arrow.rounded ul {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -163,6 +163,95 @@ img {
   .label.tiny {
     font-size: 10px;
     padding: 0px 6px; }
+
+ul.pagination {
+  display: table; }
+  ul.pagination li {
+    float: left !important;
+    display: inline-block; }
+    ul.pagination li a {
+      border-color: #bbbbbb;
+      border-width: 1px 1px 1px 0;
+      border-style: solid;
+      padding: 5px 10px;
+      background: #FAFAFA;
+      cursor: pointer; }
+      ul.pagination li a:hover {
+        text-decoration: none;
+        background: #DDF; }
+    ul.pagination li:first-child a {
+      border-left-width: 1px; }
+    ul.pagination li.active a {
+      color: #333333;
+      cursor: default;
+      background: #4fa7e2; }
+  ul.pagination.rounded li:first-child a, .breadcrumbs.arrow.rounded ul.pagination li:first-child a {
+    -webkit-border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    -ms-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px; }
+  ul.pagination.rounded li:last-child a, .breadcrumbs.arrow.rounded ul.pagination li:last-child a {
+    -webkit-border-radius: 0 5px 5px 0;
+    -moz-border-radius: 0 5px 5px 0;
+    -ms-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0; }
+
+.breadcrumbs {
+  display: table;
+  width: 100%; }
+  .breadcrumbs ul li {
+    float: left !important;
+    display: inline-block; }
+    .breadcrumbs ul li a:hover {
+      text-decoration: none;
+      cursor: pointer; }
+    .breadcrumbs ul li:last-child:after {
+      display: none !important; }
+    .breadcrumbs ul li:last-child a {
+      color: #333;
+      cursor: default; }
+  .breadcrumbs.directory {
+    background: #F7F7F7;
+    padding: 3px 10px; }
+    .breadcrumbs.directory li:after {
+      content: "/";
+      padding: 0 5px;
+      color: #777777; }
+  .breadcrumbs.arrow ul {
+    border: 1px solid #bbbbbb;
+    margin: 0;
+    padding: 0;
+    width: auto; }
+  .breadcrumbs.arrow.rounded ul li:first-child {
+    -webkit-border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    -ms-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px; }
+  .breadcrumbs.arrow.rounded ul li:last-child {
+    -webkit-border-radius: 0 5px 5px 0;
+    -moz-border-radius: 0 5px 5px 0;
+    -ms-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0; }
+  .breadcrumbs.arrow li {
+    background: -webkit-linear-gradient(left, #dddddd, #eeeeee);
+    background: -moz-linear-gradient(left, #dddddd, #eeeeee);
+    background: -o-linear-gradient(left, #dddddd, #eeeeee);
+    background: linear-gradient(to left, #eeeeee, #dddddd);
+    height: 30px;
+    margin: 0; }
+    .breadcrumbs.arrow li a {
+      vertical-align: sub;
+      margin: 0 5px; }
+    .breadcrumbs.arrow li:after {
+      content: " ";
+      margin: 0 0 0 5px;
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 15px 0 15px 10px;
+      border-color: #DDD transparent #DDD transparent;
+      vertical-align: top; }
 
 .success {
   background: #17f017 !important; }
@@ -314,8 +403,7 @@ ul {
         border-bottom: 1px solid #DDD; }
   ul li {
     line-height: 22px;
-    float: none !important;
-    margin: 2px 0; }
+    float: none !important; }
     ul li a {
       float: none !important; }
 
@@ -468,7 +556,7 @@ input, select, textarea {
   outline: 0;
   outline-color: #1D7BD1;
   border: 1px solid #AAA;
-  transition: all 500ms linear; }
+  transition: box-shadow 500ms linear; }
   input:hover, select:hover, textarea:hover {
     box-shadow: 0px 0px 5px -2px #4050CA; }
   input:focus, select:focus, textarea:focus {
@@ -766,7 +854,7 @@ li.block-img, .theater .theater-links li {
     cursor: pointer; }
   .accordeon .ac-section .ac-body {
     border-top: 1px solid #bbbbbb;
-    padding: 2px 0px;
+    padding: 0;
     display: none; }
   .accordeon .ac-section:hover {
     border: 1px solid #777777;
