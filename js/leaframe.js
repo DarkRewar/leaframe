@@ -1,5 +1,5 @@
 /*!
- * Leaframe 0.4 (http://leaframe.lignusdev.com)
+ * Leaframe 0.5 (http://leaframe.lignusdev.com)
  * Copyright 2014 Curtis Pelissier
  * Licensed under MIT (https://github.com/DarkRewar/leaframe/blob/master/~/doc/licence)
  */
@@ -61,8 +61,9 @@ if (typeof jQuery !== 'undefined') {
                 }
             }
         },
-        modal: function(e) {
-            event.preventDefault();
+        modal: function() {
+            if(event)
+                event.preventDefault();
             if ($('.out-modal').length == 0) {
                 $('body').append('<div class="out-modal"></div>');
             }
@@ -163,6 +164,23 @@ if (typeof jQuery !== 'undefined') {
                     self.addClass('active');
                 });
             }
+        },
+        dropdown: function(){
+            var dd = $(this).attr('id').replace('#', ''),
+                button = $('[data-drop="'+dd+'"]'),
+                left = button.position().left,
+                top = button.position().top + button.innerHeight() + 2;
+            if($(this).is(':visible')){
+                $(this).hide();
+            }else{
+                $('.dropdown-content').hide();
+                $(this)
+                    .show()
+                    .css({
+                        'left': left,
+                        'top': top
+                    });
+            }
         }
     });
     $(document).ready(function() {
@@ -180,7 +198,9 @@ if (typeof jQuery !== 'undefined') {
             var id = '#' + $(this).attr('modal');
             $(id).modal();
         });
-        $('body').on('click', '.modal .close', function() {
+        $('body').on('click', function(e){
+            $('.dropdown-content').hide();
+        }).on('click', '.modal .close', function() {
             $(this).parent('.modal').modal();
         }).on('click', '.out-modal', function() {
             $('.modal').modal();
@@ -204,6 +224,12 @@ if (typeof jQuery !== 'undefined') {
             var parent = $(this).parent('.ac-section');
             e.preventDefault();
             $(parent).accordeon();
+        }).on('click', '.dropdown', function(e){
+            e.stopPropagation();
+            var drop = $(this).attr("data-drop");
+            $('#'+drop).dropdown();
+        }).on('click', '.dropdown-content', function(e){
+            e.stopPropagation();
         });
         $(window).scroll(function() { // scroll event
             $('.affix').affix();

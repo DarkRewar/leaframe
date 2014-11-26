@@ -1,6 +1,6 @@
 @charset "CP850";
 /*!
- * Leaframe 0.4 (http://leaframe.lignusdev.com)
+ * Leaframe 0.5 (http://leaframe.lignusdev.com)
  * Copyright 2014 Curtis Pelissier
  * Licensed under MIT (https://github.com/DarkRewar/leaframe/blob/master/~/doc/licence)
  */
@@ -27,7 +27,7 @@ code, pre {
   box-sizing: border-box; }
 
 .contain {
-  width: 900px;
+  width: 62.5rem;
   margin: 0 auto; }
 
 section {
@@ -63,6 +63,14 @@ h5 {
 
 h6 {
   font-size: 10px; }
+
+kdb {
+  font-weight: bold;
+  color: white;
+  background: #2D2D2;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: monospace; }
 
 .heading {
   border-bottom: 1px solid rgba(0, 0, 0, 0.26);
@@ -257,7 +265,7 @@ ul.pagination {
   background: #17f017 !important; }
 
 .error {
-  background: #ec3333 !important; }
+  background: #ff1414 !important; }
 
 .info {
   background: #4fa7e2 !important; }
@@ -321,60 +329,92 @@ ul.pagination {
   width: 100%; }
 
 .menu {
-  display: block;
-  position: absolute;
-  background: #333;
+  position: absolute; }
+
+.menu,
+nav {
+  width: 100%;
+  display: table;
+  background: #333333;
   color: #FFF;
   z-index: 2000; }
-  .menu .contain {
+  .menu .contain,
+  nav .contain {
     display: table; }
-    .menu .contain * {
+    .menu .contain *,
+    nav .contain * {
       float: left; }
-  .menu.fixed {
+  .menu.fixed,
+  nav.fixed {
     position: fixed; }
-  .menu.top {
+  .menu.top,
+  nav.top {
     top: 0;
     left: 0;
     right: 0; }
-  .menu.bottom {
+  .menu.bottom,
+  nav.bottom {
     bottom: 0;
     left: 0;
     right: 0; }
-    .menu.bottom .drop {
+    .menu.bottom .drop,
+    nav.bottom .drop {
       margin-bottom: auto; }
-  .menu.left {
+  .menu.left,
+  nav.left {
     left: 0; }
-    .menu.left .drop {
+    .menu.left .drop,
+    nav.left .drop {
       margin-top: 0; }
-  .menu.right {
+  .menu.right,
+  nav.right {
     right: 0; }
-    .menu.right .drop {
+    .menu.right .drop,
+    nav.right .drop {
       margin-top: 0; }
-  .menu.left, .menu.right {
+  .menu.left, .menu.right,
+  nav.left,
+  nav.right {
     top: 0;
     bottom: 0;
     width: 150px; }
-    .menu.left .contain, .menu.right .contain {
+    .menu.left .contain, .menu.right .contain,
+    nav.left .contain,
+    nav.right .contain {
       width: 100%; }
-    .menu.left.large, .menu.right.large {
+    .menu.left.large, .menu.right.large,
+    nav.left.large,
+    nav.right.large {
       width: 200px; }
-    .menu.left.tiny, .menu.right.tiny {
+    .menu.left.tiny, .menu.right.tiny,
+    nav.left.tiny,
+    nav.right.tiny {
       width: 50px; }
-    .menu.left .contain > *, .menu.right .contain > * {
+    .menu.left .contain > *, .menu.right .contain > *,
+    nav.left .contain > *,
+    nav.right .contain > * {
       width: 100%; }
-    .menu.left a, .menu.right a {
+    .menu.left a, .menu.right a,
+    nav.left a,
+    nav.right a {
       width: 100%; }
-  .menu a {
+  .menu a,
+  nav a {
     color: #FFF;
     float: left;
     padding: 10px;
     text-decoration: none; }
-    .menu a.link-menu {
+    .menu a.link-menu,
+    nav a.link-menu {
       font-size: 14px;
       padding: 0 10px;
       line-height: 39px; }
-    .menu a:hover {
-      background: #222; }
+    .menu a:hover,
+    nav a:hover {
+      cursor: pointer;
+      color: inherit;
+      background: #222;
+      text-decoration: none; }
 
 ul {
   text-decoration: none;
@@ -417,6 +457,8 @@ table {
     display: table-header-group; }
   table tbody {
     display: table-row-group; }
+    table tbody tr:hover {
+      background: #EAEAEA; }
   table thead, table tbody {
     width: 100%;
     vertical-align: middle; }
@@ -449,9 +491,10 @@ button,
   border: 1px solid #AAA;
   padding: 8px 16px;
   outline: 0;
-  text-shadow: 0 1px 0px rgba(255, 255, 255, 0.25);
   color: #333333;
-  text-decoration: none; }
+  text-decoration: none;
+  position: relative;
+  display: inline-block; }
   button.success,
   .button.success {
     border: 1px solid #13B413; }
@@ -508,10 +551,10 @@ button,
     border-top-left-radius: 0;
     border-bottom-left-radius: 0; }
 .special-input .website {
-  padding: 7px 0;
+  padding: 0.55em 0;
   background: #EEE;
   width: 14%;
-  font-size: 16px;
+  font-size: 0.95em;
   text-align: center; }
   .special-input .website:after {
     content: "http://";
@@ -561,7 +604,7 @@ input, select, textarea {
     box-shadow: 0px 0px 5px -2px #4050CA; }
   input:focus, select:focus, textarea:focus {
     box-shadow: 0px 0px 10px -2px #4050CA; }
-  input[type="text"], select[type="text"], textarea[type="text"], input[type="number"], select[type="number"], textarea[type="number"], input[type="email"], select[type="email"], textarea[type="email"] {
+  input[type="text"], select[type="text"], textarea[type="text"], input[type="number"], select[type="number"], textarea[type="number"], input[type="email"], select[type="email"], textarea[type="email"], input[type="password"], select[type="password"], textarea[type="password"] {
     width: 100%; }
 
 select, textarea {
@@ -610,10 +653,10 @@ select, textarea {
       text-shadow: 0 0 0; }
 
 a.close, .theater .theater-scene a.close {
-  content: "×";
+  content: "&times;";
   position: absolute;
   right: 0;
-  margin-right: 20px;
+  margin-right: 10px;
   cursor: pointer;
   color: #111; }
   a.close:hover, .theater .theater-scene a.close:hover {
@@ -671,7 +714,8 @@ li.block-img, .theater .theater-links li {
   width: 200px;
   box-shadow: 0 0 1px 0px #000;
   transition: all 300ms ease-in;
-  margin: 5px; }
+  margin: 5px;
+  background: rgba(255, 255, 255, 0.5); }
   li.block-img:hover, .theater .theater-links li:hover {
     box-shadow: 0 0 5px 0px #174386; }
   li.block-img img, .theater .theater-links li img {
@@ -716,6 +760,7 @@ li.block-img, .theater .theater-links li {
     height: 25%;
     box-shadow: 0 4px 15px -1px #DDD; }
     .theater .theater-links li {
+      cursor: pointer;
       height: 95%;
       margin: 0.5%; }
       .theater .theater-links li img {
@@ -866,6 +911,69 @@ li.block-img, .theater .theater-links li {
     .accordeon .ac-section.active:hover {
       border: 1px solid #bbbbbb;
       background: inherit; }
+
+.dropdown {
+  cursor: pointer; }
+  .dropdown.button {
+    padding-right: 3em; }
+    .dropdown.button::after {
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 5px 5px 0 5px;
+      border-color: #333333 transparent transparent transparent;
+      position: absolute;
+      content: "";
+      display: block;
+      right: 1rem;
+      top: 50%;
+      margin-top: -0.2em; }
+
+div.dropdown-content {
+  padding: 10px; }
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  border: 1px solid #bbbbbb;
+  margin-top: 2px;
+  left: 5px;
+  background: #FFF;
+  max-width: 400px;
+  padding: 0;
+  z-index: 10; }
+  .dropdown-content li {
+    cursor: pointer;
+    color: #333; }
+    .dropdown-content li a {
+      padding: 4px 10px;
+      display: block;
+      color: inherit; }
+      .dropdown-content li a:hover {
+        text-decoration: none;
+        background: #EEE; }
+  .dropdown-content::before {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 5px 5px 5px;
+    border-color: transparent transparent white transparent;
+    z-index: 2;
+    left: 12px;
+    top: 1px; }
+  .dropdown-content::after {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 6px 6px 6px;
+    border-color: transparent transparent #bbbbbb transparent;
+    top: 0px;
+    left: 11px; }
+  .dropdown-content::before, .dropdown-content::after {
+    position: absolute;
+    content: "";
+    display: block;
+    margin-top: -0.38em; }
 
 footer {
   border-top: 1px solid #bbbbbb; }
