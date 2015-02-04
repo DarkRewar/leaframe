@@ -141,7 +141,7 @@ if (typeof jQuery !== 'undefined') {
                     $(this).css({
                         position: 'fixed',
                         top: topDecal,
-                        'width': widthBox
+                        'width': '100%'
                     });
                 }
             }
