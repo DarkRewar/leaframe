@@ -3,7 +3,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 20px;
     max-width: 62.5rem;
 
     &:before, &:after{
@@ -14,12 +14,12 @@
     &:after{
         clear: both;
     }
-}
 
-.row .row{
-    width: auto;
-    margin-left: -#{$padding-border};
-    margin-right: -#{$padding-border};
+    .row{
+        width: auto;
+        margin-left: -#{$padding-border};
+        margin-right: -#{$padding-border};
+    }
 }
 
 .col{
@@ -230,7 +230,7 @@ $lWidth: 1000px;
     }
 }
 
-/* Medium screen 800px < x <1000px */
+/* Medium screen 800px < x < 1000px */
 @media only screen and (min-width: #{$sWidth}){
     .#{$medium}-hide,
     .#{$medium}-0{

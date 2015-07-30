@@ -11,14 +11,18 @@ $main-color-link-hover : #0F43C5;
 $main-border-color: #BBB;
 $main-border-color-hover: #777;
 
-/*$success-color: #17f017;
-$error-color: #FF2121;
-$info-color: #4FA7E2;
-$warning-color: #FFAA12;*/
+$normal-color: #ddd;
 $success-color: #2ecc71;
 $error-color: #e74c3c;
 $info-color: #3498db;
 $warning-color: #f39c12;
+
+$error-soft: #FF5442;
+
+$success-border: #1D9650;
+$error-border: #8F2F25;
+$info-border: #1F78B3;
+$warning-border: #B7760E;
 
 $padding-border: 1rem;
 
@@ -65,7 +69,9 @@ html{
     font-size: 100%;
 }
 
-body{
+body{    
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     margin: 0;
     color: $main-color;
     font-size: 100%;
@@ -368,7 +374,9 @@ ul.pagination{
         }
     }
 }
-
+.normal{
+    background: $normal-color;
+}
 .success{
     background: $success-color;
 }
@@ -536,7 +544,7 @@ ul{
     li{
         line-height: 22px;
         float: none;
-        
+        display: flex;
         a{
             float: none;
         }
@@ -609,7 +617,6 @@ table{
 
 button,
 .button{
-    background: #DDD;
     border: none;
     padding: 8px 16px;
     outline: 0;
@@ -814,13 +821,15 @@ select,textarea{
 
 @import 'components/drop';
 
+@import 'components/progress';
+
 @import 'components/message';
 
 a.close{
     content: "&times;";
     position: absolute;
     right: 0;
-    margin-right: 10px;
+    margin-right: 14px;
     cursor: pointer;
     color: #111;
 
@@ -962,6 +971,7 @@ li.block-img{
 
     .tab-panel{
         ul{
+            display: block;
             padding: 0;
             li{
                 float: left !important;
@@ -971,6 +981,7 @@ li.block-img{
                 cursor: pointer;
                 margin: 0;
                 transition: background 500ms;
+                word-wrap: break-word;                
 
                 &:hover{
                     background: rgba(0,0,0,0.05);
