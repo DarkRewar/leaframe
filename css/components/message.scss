@@ -1,0 +1,37 @@
+$error-soft: #FF5442;
+
+$success-border: #1D9650;
+$error-border: #8F2F25;
+$info-border: #1F78B3;
+$warning-border: #B7760E;
+
+
+.message{
+    display: block;
+    width: 100%;
+    color: #111;
+    padding: 15px;
+    font-size: 18px;
+    margin: 4px 0;
+    position: relative;
+    border-bottom: 3px solid #eee;
+    color: #fff;
+    font-weight: bold;
+
+    &.error{
+        background: $error-soft;
+        border-color: $error-border;
+    }
+
+    &.success{
+        border-color: $success-border;
+    }
+
+    &.info{
+        border-color: $info-border;
+    }
+
+    &.warning{
+        border-color: $warning-border;
+    }
+}

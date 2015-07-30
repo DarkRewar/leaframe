@@ -1,5 +1,5 @@
 /*!
- * Leaframe 0.5 (http://leaframe.lignusdev.com)
+ * Leaframe 0.65 (http://leaframe.lignusdev.com)
  * Copyright 2014 Curtis Pelissier
  * Licensed under MIT (https://github.com/DarkRewar/leaframe/blob/master/~/doc/licence)
  */
@@ -38,7 +38,7 @@ if (typeof jQuery !== 'undefined') {
             }
         },
         drop: function(e) {
-            var id = '#' + $(this).attr('drop');
+            var id = '#' + $(this).attr('data-drop');
             if ($(id).is(':visible')) {
                 $(id).hide();
             } else {
@@ -99,7 +99,7 @@ if (typeof jQuery !== 'undefined') {
             }
         },
         theater: function(e) {
-            var id = $(this).parents('[theater]').attr('theater');
+            var id = $(this).parents('[data-theater]').data('theater');
             var iid = '#' + id;
             var img = $(this).html();
             if ($(iid).length == 0) {
@@ -107,9 +107,9 @@ if (typeof jQuery !== 'undefined') {
             } else {
                 $(iid).html('<div class="theater-scene" id="' + id + '-scene">' + '<a class="close">&times;</a>' + img + '</div>' + '<div class="theater-links" id="' + id + '-links"></div>');
             }
-            $('[theater="' + id + '"]').find('li img').each(function() {
+            $('[data-theater="' + id + '"]').find('li img').each(function() {
                 var limg = $(this).attr('src');
-                $(iid + '-links').append($('<li />').attr('to-change', id + '-scene').append($('<img />').attr('src', limg)));
+                $(iid + '-links').append($('<li />').attr('data-to-change', id + '-scene').append($('<img />').attr('src', limg)));
             });
             $(iid).theaterDraw();
         },
@@ -122,9 +122,9 @@ if (typeof jQuery !== 'undefined') {
             parent.find('.content.active').fadeOut(350, function() {
                 $(this).removeClass('active');
                 var id_tab = $(this).attr('id');
-                $(parent).find('[show="' + id_tab + '"]').removeClass('active');
+                $(parent).find('[data-show="' + id_tab + '"]').removeClass('active');
                 id_tab = $(to_show).attr('id');
-                $(parent).find('[show="' + id_tab + '"]').addClass('active');
+                $(parent).find('[data-show="' + id_tab + '"]').addClass('active');
                 to_show.fadeIn(350, function() {
                     $(this).addClass('active');
                 });
@@ -135,7 +135,7 @@ if (typeof jQuery !== 'undefined') {
                 $(this).css('position', 'static');
                 var affix = $(this).offset().top;
                 var widthBox = $(this).innerWidth();
-                var topDecal = ( !! $(this).attr('decal-top')) ? parseInt($(this).attr('decal-top')) : 0;
+                var topDecal = ( !! $(this).data('decal-top')) ? parseInt($(this).data('decal-top')) : 0;
                 var windowTop = $(window).scrollTop() + topDecal;
                 if (affix < windowTop) {
                     $(this).css({
@@ -167,7 +167,7 @@ if (typeof jQuery !== 'undefined') {
         },
         dropdown: function(){
             var dd = $(this).attr('id').replace('#', ''),
-                button = $('[data-drop="'+dd+'"]'),
+                button = $('[data-dropdown="'+dd+'"]'),
                 left = button.position().left,
                 top = button.position().top + button.innerHeight() + 2;
             if($(this).is(':visible')){
@@ -184,27 +184,26 @@ if (typeof jQuery !== 'undefined') {
         }
     });
     $(document).ready(function() {
-        $('[drop]').hover(function() {
+        $('[data-drop]').hover(function() {
             $(this).drop();
         }, function() {
             $(this).drop();
         });
-        $('.message .close').click(function() {
+        $('[data-modal]').click(function() {
+            var id = '#' + $(this).attr('data-modal');
+            $(id).modal();
+        });
+        $('body').on('click', '.message .close', function(){
             $(this).parent('.message').fadeOut(500, function() {
                 $(this).remove();
             });
-        });
-        $('[modal]').click(function() {
-            var id = '#' + $(this).attr('modal');
-            $(id).modal();
-        });
-        $('body').on('click', function(e){
+        }).on('click', function(e){
             $('.dropdown-content').hide();
         }).on('click', '.modal .close', function() {
             $(this).parent('.modal').modal();
         }).on('click', '.out-modal', function() {
             $('.modal').modal();
-        }).on('click', '[theater] li', function() {
+        }).on('click', '[data-theater] li', function() {
             $(this).theater();
         }).on('click', '.theater .close', function() {
             $(this).parents('.theater').theaterDraw();
@@ -212,12 +211,12 @@ if (typeof jQuery !== 'undefined') {
             if (e.which == 27) {
                 $('.theater').theaterDraw('hide');
             }
-        }).on('click', '[to-change]', function() {
+        }).on('click', '[data-to-change]', function() {
             var url = $(this).find('img').attr('src');
-            var id = $(this).attr('to-change');
+            var id = $(this).attr('data-to-change');
             $('#' + id).find('img').attr('src', url);
         }).on('click', '.tabs>.tab-panel>ul>li', function(e) {
-            var id = $(this).attr('show');
+            var id = $(this).data('show');
             e.preventDefault();
             $('#' + id).panel();
         }).on('click', '.accordeon>.ac-section>.ac-head', function(e) {
@@ -226,7 +225,7 @@ if (typeof jQuery !== 'undefined') {
             $(parent).accordeon();
         }).on('click', '.dropdown', function(e){
             e.stopPropagation();
-            var drop = $(this).attr("data-drop");
+            var drop = $(this).attr("data-dropdown");
             $('#'+drop).dropdown();
         }).on('click', '.dropdown-content', function(e){
             e.stopPropagation();
