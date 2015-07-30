@@ -20,11 +20,12 @@
                 <div id="css" class="drop">
                     <ul class="beauty">
                         <li><a href="#typography">Typography</a></li>
-                        <li><a href="#buttons">Buttons <span class="label tiny warning">0.6</span></a></li>
+                        <li><a href="#buttons">Buttons <span class="label tiny warning">0.7</span></a></li>
                         <li><a href="#labels">Labels</a></li>
                         <li><a href="#range">Columns <span class="label tiny warning">0.6</span></a></li>
                         <li><a href="#pagination">Pagination <span class="label tiny success">0.4</span></a></li>
                         <li><a href="#breadcrumb">Breadcrumbs <span class="label tiny success">0.4</span></a></li>
+                        <li><a href="#progress">Progress Bar <span class="label tiny success">0.7</span></a></li>
                         <li><a href="#lists">Lists</a></li>
                         <li><a href="#forms">Forms</a></li>
                         <li><a href="#block-pres">Presentation Block <span class="label tiny success">0.6</span></a></li>
@@ -36,7 +37,7 @@
                 <a href="#" class="link-menu ref">Javascript</a>
                 <div id="js" class="drop">
                     <ul class="beauty">
-                        <li><a href="#alerts">Alerts</a></li>
+                        <li><a href="#alerts">Alerts <span class="label tiny warning">0.7</span></a></li>
                         <li><a href="#tables">Tables</a></li>
                         <li><a href="#tabs">Tabs</a></li>
                         <li><a href="#accordeon">Accordeon<span class="label tiny warning">0.4</span></a></li>
@@ -75,9 +76,21 @@
                                     ce n'est donc pas le rendu final qui est présenté sur cette page.
                                 </p>
                             </div>
+                            <div class="content" id="patch0-7">
+                                <h1>Patch Note version 0.7</h1>
+                                <p>Voici les informations concernant la dernière mise à jour, la version 0.7 :</p>
+                                <ul class="classic">
+                                    <li>Correction des couleurs des boutons</li>
+                                    <li>Ajout de la "normal" color grise</li>
+                                    <li>Correction du débordement des tab-panel</li>
+                                    <li>Correction des link dans les listes, passage à 100%</li>
+                                    <li>Correction des messages: font-weight, hX, p, a.close et padding</li>
+                                    <li>Ajout des Progress-bar</li>
+                                </ul>
+                            </div>
                             <div class="content" id="patch0-6">
                                 <h1>Patch Note version 0.6</h1>
-                                <p>Voici les informations concernant la dernière mise à jour, la version 0.6 :</p>
+                                <p>Voici les informations concernant la mise à jour de la version 0.6 :</p>
                                 <ul class="classic">
                                     <li>Ajout du responsive grid</li>
                                     <li>Ajout du presentation block</li>
@@ -87,7 +100,7 @@
                             </div>
                             <div class="content" id="patch0-5">
                                 <h1>Patch Note version 0.5</h1>
-                                <p>Voici les informations concernant la dernière mise à jour, la version 0.5 :</p>
+                                <p>Voici les informations concernant la mise à jour de la version 0.5 :</p>
                                 <ul class="classic">
                                     <li>Ajout des dropdown</li>
                                     <li>Ajout des menus horizontaux</li>
@@ -97,7 +110,7 @@
                             </div>
                             <div class="content" id="patch0-4">
                                 <h1>Patch Note version 0.4</h1>
-                                <p>Voici les informations concernant la dernière mise à jour, la version 0.4 :</p>
+                                <p>Voici les informations concernant la mise à jour de la version 0.4 :</p>
                                 <ul class="classic">
                                     <li>Ajout de la pagination</li>
                                     <li>Ajout du fil d'arianne (breadcrumb)</li>
@@ -111,42 +124,14 @@
                                     théâtre qui n'est pas réellement fini.
                                 </p>
                             </div>
-                            <div class="content" id="patch0-35">
-                                <h1>Patch Note version 0.35</h1>
-                                <p>Voici les informations concernant la mise à jour de la version 0.35 :</p>
-                                <ul class="classic">
-                                    <li>Mise à jour visuelle des bordures</li>
-                                    <li>Ajout de l'accordéon (voir javascript)</li>
-                                </ul>
-                                <p>
-                                    Remarque: lors de la mise à jour 0.3, j'avais intégré l'affix et la scrollbar qui
-                                    sont des éléments très importants, et je voulais les sortir rapidement. Seulement,
-                                    dans ma hâte, j'ai oublié d'implémenter un autre élément essentiel: l'accordéon.
-                                    Ce n'est pas la mise à jour 0.4 car il s'agit juste d'un oubli.
-                                </p>
-                            </div>
-                            <div class="content" id="patch0-3">
-                                <h1>Patch Note version 0.3</h1>
-                                <p>Voici les informations concernant la mise à jour de la version 0.3 :</p>
-                                <ul class="classic">
-                                    <li>Ajout de la license MIT rendant open source le projet</li>
-                                    <li>Ajout des affix</li>
-                                    <li>Ajout d'un nouvel élément de design : la scrollbar</li>
-                                    <li>
-                                        Ajout d'un github : 
-                                        <a target="_blank" href="https://github.com/DarkRewar/leaframe">https://github.com/DarkRewar/leaframe</a>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
                         <div class="tab-panel">
                             <ul>
                                 <li class="active" data-show="index1">Info</li>
+                                <li data-show="patch0-7">Patch Note 0.7</li>
                                 <li data-show="patch0-6">Patch Note 0.6</li>
                                 <li data-show="patch0-5">Patch Note 0.5</li>
                                 <li data-show="patch0-4">Patch Note 0.4</li>
-                                <li data-show="patch0-35">Patch Note 0.35</li>
-                                <li data-show="patch0-3">Patch Note 0.3</li>
                             </ul>
                         </div>
                     </div>
@@ -1164,6 +1149,7 @@
                             <li><a href="#range">Columns</a></li>
                             <li><a href="#pagination">Pagination</a></li>
                             <li><a href="#breadcrumb">Breadcrumbs</a></li>
+                            <li><a href="#progress">Progress Bar</a></li>
                             <li><a href="#lists">Lists</a></li>
                             <li><a href="#forms">Forms</a></li>
                             <li><a href="#block-pres">Presentation Block</a></li>
