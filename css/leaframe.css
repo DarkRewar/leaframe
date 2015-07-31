@@ -82,8 +82,8 @@ kdb {
   border-bottom: 1px solid rgba(0, 0, 0, 0.26);
   padding: 5px 0; }
 
-/* Les particularités du Framework */
-/* Partie 1, les petits détails */
+/* Les particularit├®s du Framework */
+/* Partie 1, les petits d├®tails */
 .rounded, .breadcrumbs.arrow.rounded ul {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -125,7 +125,7 @@ img {
 .lf-scrollbar::-webkit-scrollbar {
   width: 12px;
   height: 12px;
-  background: rgba(0, 0, 0, 0); }
+  background: transparent; }
 .lf-scrollbar::-webkit-scrollbar-track-piece {
   /* Fond */
   background: #E7E7E7;
@@ -157,7 +157,7 @@ img {
   -webkit-border-bottom-right-radius: 5px 9px;
   -webkit-border-bottom-left-radius: 5px 9px; }
 .lf-scrollbar::-webkit-scrollbar-corner {
-  /* Coin de la fenêtre */
+  /* Coin de la fen├¬tre */
   background: #bfb6a3 0 0 no-repeat; }
 
 .label {
@@ -1007,7 +1007,7 @@ select, textarea {
       height: 0;
       border-style: solid;
       border-width: 5px 5px 0 5px;
-      border-color: white transparent transparent transparent; }
+      border-color: #FFF transparent transparent transparent; }
   [data-drop]:hover {
     background: #222; }
 
@@ -1328,7 +1328,6 @@ li.block-img, .theater .theater-links li {
     display: block;
     padding: 0; }
     .tabs .tab-panel ul li {
-      float: left !important;
       display: inline-block;
       padding: 2px 8px;
       font-size: 16px;
@@ -1349,7 +1348,7 @@ li.block-img, .theater .theater-links li {
       border-color: #bbbbbb;
       border-radius: 3px 3px 0 0;
       border-width: 0 0 0 0;
-      margin: 0 4px; }
+      margin: 0 4px -1px 4px; }
       .tabs.to-top .tab-panel ul li.active {
         border-width: 1px 1px 0 1px;
         margin-bottom: -1px;
@@ -1368,7 +1367,7 @@ li.block-img, .theater .theater-links li {
       border-color: #bbbbbb;
       border-radius: 0 0 3px 3px;
       border-width: 0 0 0 0;
-      margin: 0 4px; }
+      margin: -1px 4px 0 4px; }
       .tabs.to-bottom .tab-panel ul li.active {
         border-width: 0 1px 1px 1px;
         margin-top: -1px;
