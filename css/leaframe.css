@@ -161,12 +161,12 @@ img {
   background: #bfb6a3 0 0 no-repeat; }
 
 .label {
-  text-shadow: none !important;
-  box-shadow: none !important;
+  text-shadow: none;
+  box-shadow: none;
   text-transform: uppercase;
   background-color: #DDD;
-  color: #000 !important;
-  float: none !important;
+  color: #000;
+  float: none;
   display: inline-block;
   vertical-align: top;
   border-radius: 3px;
