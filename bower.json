@@ -1,6 +1,6 @@
 {
     "name": "leaframe",
-    "git": "0.7",
+    "version": "0.7",
     "main": [
         "./css/leaframe.min.css",
         "./js/leaframe.min.js"
