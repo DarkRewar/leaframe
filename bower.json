@@ -1,0 +1,8 @@
+{
+  "name": "leaframe",
+  "version": "0.7",
+  "main": "./css/leaframe.min.css",
+  "ignore": [],
+  "dependencies": {
+  }
+}
