@@ -1,0 +1,7 @@
+﻿:root {
+    font-size: 36px;
+}
+
+.unity-text-element {
+    font-size: 36px;
+}

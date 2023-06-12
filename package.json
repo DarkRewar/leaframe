@@ -1,0 +1,22 @@
+{
+  "name": "com.lignus.leaframe",
+  "version": "0.8.0",
+  "displayName": "Leaframe",
+  "description": "An Unity UI Toolkit theme and USS framework for your runtime game UIs",
+  "unity": "2022.3",
+  "unityRelease": "0",
+  "documentationUrl": "https://example.com/",
+  "changelogUrl": "https://github.com/DarkRewar/leaframe/blob/master/CHANGELOG.md",
+  "licensesUrl": "https://github.com/DarkRewar/leaframe/blob/master/LICENSE",
+  "keywords": [
+    "ui",
+    "toolkit",
+    "framework",
+    "theme"
+  ],
+  "author": {
+    "name": "Curtis Pelissier",
+    "email": "curtis.pelissier@gmail.com",
+    "url": "https://rewar.fr"
+  }
+}

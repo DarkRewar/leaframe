@@ -1,0 +1,35 @@
+﻿.unity-button {
+    padding: 8px 16px;
+    position: relative;
+}
+
+.unity-button:hover {
+    cursor: link;
+    /*box-shadow: inset 0px 0px 100px 0px rgba(0, 0, 0, 0.1);*/
+    /*text-decoration: none;*/
+}
+
+/*&.success,*/
+/*&.error,*/
+/*&.info,*/
+/*&.warning {*/
+/*     color: #FFF;*/
+/* }*/
+/*&.tiny {*/
+/*     padding: 2px 4px;*/
+/*     font-size: 10px;*/
+/*     font-weight: bold;*/
+/* }*/
+/*&.small {*/
+/*     padding: 4px 8px;*/
+/*     font-size: 12px;*/
+/* }*/
+/*&.fat {*/
+/*     padding: 12px 24px;*/
+/*     font-size: 18px;*/
+/* }*/
+/*&.expand {*/
+/*     width: 100%;*/
+/* }*/
+/*&*/
+/*}*/
