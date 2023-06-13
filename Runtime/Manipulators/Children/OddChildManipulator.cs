@@ -1,4 +1,4 @@
-﻿namespace Leaframe.Manipulators
+﻿namespace Leaframe.Manipulators.Children
 {
     public class OddChildManipulator : NthChildManipulator
     {

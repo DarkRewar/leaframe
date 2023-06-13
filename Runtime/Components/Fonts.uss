@@ -1,7 +1,10 @@
 ﻿:root {
-    font-size: 36px;
+    --default-font-size: 36px;
+    font-size: var(--default-font-size);
 }
 
 .unity-text-element {
-    font-size: 36px;
+    font-size: var(--default-font-size);
+    -unity-font: resource("Fonts/Oxygen-Regular");
+    -unity-font-definition: resource("Fonts/Oxygen-Regular SDF");
 }

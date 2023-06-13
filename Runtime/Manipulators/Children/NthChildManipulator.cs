@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Leaframe.Manipulators
+namespace Leaframe.Manipulators.Children
 {
     /// <summary>
     /// Allow <see cref="VisualElement"/> to be flagged as nth child.

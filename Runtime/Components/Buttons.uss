@@ -1,12 +1,49 @@
 ﻿.unity-button {
-    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 32px;
     position: relative;
+    background-color: var(--normal-color);
+    border-radius: 15px;
+    border-width: 0;
+    /*border-color: rgba(0, 0, 0, 0.2);*/
+    /*border-bottom-width: 8px;*/
+    flex-direction: row;
+    -unity-font-style: bold;
+}
+
+.unity-button.success,
+.unity-button.error,
+.unity-button.info,
+.unity-button.warning {
+    color: white;
+}
+
+.unity-button.success {
+    background-color: var(--success-color);
+}
+
+.unity-button.error {
+    background-color: var(--error-color);
+}
+
+.unity-button.warning {
+    background-color: var(--warning-color);
+}
+
+.unity-button.info {
+    background-color: var(--info-color);
 }
 
 .unity-button:hover {
     cursor: link;
     /*box-shadow: inset 0px 0px 100px 0px rgba(0, 0, 0, 0.1);*/
     /*text-decoration: none;*/
+}
+
+.button-icon {
+    width: 50px;
+    height: 50px;
 }
 
 /*&.success,*/

@@ -1,9 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Button text="Button" display-tooltip-when-elided="true" />
-    <Leaframe.Controls.Container>
-        <ui:Button text="Button" display-tooltip-when-elided="true" />
-        <ui:Button text="Button" display-tooltip-when-elided="true" />
-        <ui:Button text="Button" display-tooltip-when-elided="true" />
-        <ui:Button text="Button" display-tooltip-when-elided="true" />
-    </Leaframe.Controls.Container>
+    <Leaframe.Controls.Layouts.Container>
+        <ui:Button text="Button" display-tooltip-when-elided="true" class="success" style="-unity-font-definition: resource(&apos;Fonts/Oxygen-Regular SDF&apos;); -unity-font-style: bold;" />
+        <ui:Button text="Button" display-tooltip-when-elided="true" class="error" style="-unity-font-definition: resource(&apos;Fonts/Oxygen-Bold SDF&apos;);" />
+        <ui:Button text="Button" display-tooltip-when-elided="true" class="warning" />
+        <ui:Button text="Button" display-tooltip-when-elided="true" class="info" />
+    </Leaframe.Controls.Layouts.Container>
 </ui:UXML>

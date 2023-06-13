@@ -1,13 +1,18 @@
-﻿using Leaframe.Manipulators;
+﻿using Leaframe.Manipulators.Children;
 using UnityEngine.UIElements;
 
-namespace Leaframe.Controls
+namespace Leaframe.Controls.Layouts
 {
     public class Container : VisualElement
     {
         #region FACTORY & TRAITS
 
-        public new class UxmlFactory : UxmlFactory<Container, UxmlTraits>{}
+        public new class UxmlFactory : UxmlFactory<Container, UxmlTraits>
+        {
+            public override string uxmlName => nameof(Container);
+
+            public override string uxmlNamespace => "Leaframe.Layouts";
+        }
 
         public new class UxmlTraits : VisualElement.UxmlTraits
         {
@@ -31,7 +36,6 @@ namespace Leaframe.Controls
             this.AddManipulator(_oddChildManipulator = new OddChildManipulator());
             this.AddManipulator(_onlyChildManipulator = new OnlyChildManipulator());
             this.AddManipulator(_emptyManipulator = new EmptyManipulator());
-            this.AddManipulator(new NthChildManipulator("3n+1", "third-plus-one")); // :nth-child(3n+1)
         }
     }
 }

@@ -8,7 +8,13 @@
 
 ### Improvements
 
+#### Components
+
 - Add `Container` custom control to handle once `.first-child`, `.last-child`, `.even-child` and `.odd-child` ;
+- Add `Alert` custom control to display top information ;
+
+#### Manipulators
+
 - Add abstract `ChildManipulator` to handle children manipulation in `VisualElement` ;
 - Add `ChildManipulator` inherited class `FirstChildManipulator` to determine which `VisualElement` is the `.first-child` ;
 - Add `ChildManipulator` inherited class `LastChildManipulator` to determine which `VisualElement` is the `.last-child` ;

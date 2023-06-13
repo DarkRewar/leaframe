@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Leaframe.Controls.Components.Alert type="Success" text="This is a success!" />
+    <Leaframe.Controls.Components.Alert type="Warning" text="This is a warning!" style="top: 120px;" />
+    <Leaframe.Controls.Components.Alert type="Info" text="This is an info." style="top: 220px;" />
+    <Leaframe.Controls.Components.Alert type="Error" text="This is an error!" style="top: 320px;" />
+</ui:UXML>

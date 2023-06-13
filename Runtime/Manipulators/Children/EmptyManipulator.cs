@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UIElements;
 
-namespace Leaframe.Manipulators
+namespace Leaframe.Manipulators.Children
 {
     /// <summary>
     /// Allow <see cref="VisualElement"/> to be flagged as empty.

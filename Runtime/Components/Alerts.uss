@@ -1,0 +1,30 @@
+﻿.alert {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    padding: 15px 42px 15px 22px;
+    position: absolute;
+    border-bottom-width: 3px;
+    color: #fff;
+    -unity-font-style: bold;
+}
+
+.alert.success {     
+    background-color: var(--success-color);
+    border-color: var(--success-border-color);
+}
+
+.alert.error {     
+    background-color: var(--error-color);
+    border-color: var(--error-border-color);
+}
+
+.alert.info {     
+    background-color: var(--info-color);
+    border-color: var(--info-border-color);
+}
+
+.alert.warning {     
+    background-color: var(--warning-color);
+    border-color: var(--warning-border-color);
+}

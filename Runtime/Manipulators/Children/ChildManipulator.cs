@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UIElements;
 
-namespace Leaframe.Manipulators
+namespace Leaframe.Manipulators.Children
 {
     /// <summary>
     /// Base class to allow child selection inside a <see cref="VisualElement"/>.
