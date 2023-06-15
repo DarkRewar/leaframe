@@ -1,0 +1,64 @@
+﻿.badge {
+    padding: 8px 16px;
+    border-radius: 40px;
+    background-color: var(--normal-color);
+    flex-direction: row;
+    align-self: center;
+    margin: 3px;
+}
+
+.badge-icon {
+    width: 54px;
+    height: 54px;
+    background-color: white;
+    margin: 0 10px;
+}
+
+.badge.small {
+    font-size: var(--small-font-size);
+}
+
+.badge.large {
+    font-size: var(--large-font-size);
+}
+
+.badge.success,
+.badge.error,
+.badge.info,
+.badge.warning {
+    color: white;
+}
+
+.badge.success {
+    background-color: var(--success-color);
+}
+
+.badge.error {
+    background-color: var(--error-color);
+}
+
+.badge.info {
+    background-color: var(--info-color);
+}
+
+.badge.warning {
+    background-color: var(--warning-color);
+}
+
+.badge-close {
+    align-self: center;
+    width: 40px;
+    height: 40px;
+    padding: initial;
+    border-radius: initial;
+    border-width: initial;
+    background-color: initial;
+    background-image: resource("Icons/GameIcons/Black/cross");
+}
+
+.badge.success .badge-close,
+.badge.error .badge-close,
+.badge.info .badge-close,
+.badge.warning .badge-close {
+    background-image: resource("Icons/GameIcons/White/cross");
+}

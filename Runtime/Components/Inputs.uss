@@ -1,0 +1,76 @@
+﻿/************ TOGGLE ************/
+
+.unity-toggle__input {
+    width: 72px;
+    height: 32px;
+    flex-grow: 0;
+    flex-basis: initial;
+    border-radius: 16px;
+    align-self: center;
+    overflow: visible;
+    background-color: var(--normal-color);
+    transition: 0.35s ease-out;
+}
+
+.unity-toggle__checkmark {
+    --toggle-handle-size: 46px;
+    
+    background-image: initial;
+    background-color: grey;
+    width: var(--toggle-handle-size);
+    height: var(--toggle-handle-size);
+    border-radius: 80px;
+    margin-left: -10px;
+    translate: 0 0;
+    transition: 0.35s ease-out;
+}
+
+.unity-toggle > .unity-toggle__input:checked {
+    background-color: var(--info-color);
+}
+
+.unity-toggle:focus > .unity-toggle__input > .unity-toggle__checkmark,
+.unity-toggle:focus > .unity-toggle__input:checked > .unity-toggle__checkmark,
+.unity-toggle > .unity-toggle__input:hover > .unity-toggle__checkmark,
+.unity-toggle > .unity-toggle__input:active > .unity-toggle__checkmark,
+.unity-toggle > .unity-toggle__input:checked > .unity-toggle__checkmark {
+    background-image: initial;
+}
+
+.unity-toggle > .unity-toggle__input:checked > .unity-toggle__checkmark {
+     translate: 100% 0;
+}
+
+/************ SLIDERS ************/
+
+.unity-slider__input {
+    
+}
+
+.unity-base-slider__drag-container {
+    flex-direction: row;
+    margin-right: 30px;
+}
+
+.unity-base-slider .unity-base-slider__dragger {
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+    margin: initial;
+    top: 14px;
+    align-self: center;
+    transition: all 0.15s ease-out-circ;
+}
+
+.unity-base-slider__input:focus .unity-base-slider__dragger,
+.unity-base-slider .unity-base-slider__dragger:hover {
+    top: 5px;
+    width: 50px;
+    height: 50px;
+}
+
+.unity-base-slider .unity-base-slider__dragger-border {
+    display: none;
+    height: 18px;
+    background-color: red;
+}

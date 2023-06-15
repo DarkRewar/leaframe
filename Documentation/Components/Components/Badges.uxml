@@ -1,0 +1,41 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
+        <ui:VisualElement class="badge" style="align-self: center;">
+            <ui:Label tabindex="-1" text=".badge" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge small">
+            <ui:Label tabindex="-1" text=".badge.small" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge large">
+            <ui:Label tabindex="-1" text=".badge.large" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
+        <ui:VisualElement class="badge success" style="align-self: center;">
+            <ui:Label tabindex="-1" text=".badge.success" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge error">
+            <ui:Label tabindex="-1" text=".badge.error" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge info">
+            <ui:Label tabindex="-1" text=".badge.info" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge warning">
+            <ui:Label tabindex="-1" text=".badge.warning" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
+        <ui:VisualElement class="badge" style="align-self: center;">
+            <ui:VisualElement class="badge-icon" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+            <ui:Label tabindex="-1" text=".badge" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge" style="align-self: center;">
+            <ui:Label tabindex="-1" text=".badge" display-tooltip-when-elided="true" />
+            <ui:Button display-tooltip-when-elided="true" class="badge-close" style="width: 40px;" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge success" style="align-self: center;">
+            <ui:Label tabindex="-1" text=".badge" display-tooltip-when-elided="true" />
+            <ui:Button display-tooltip-when-elided="true" class="badge-close" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

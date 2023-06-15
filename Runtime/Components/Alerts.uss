@@ -7,6 +7,7 @@
     border-bottom-width: 3px;
     color: #fff;
     -unity-font-style: bold;
+    margin-bottom: 10px;
 }
 
 .alert.success {     

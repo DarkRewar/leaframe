@@ -1,19 +1,30 @@
-﻿using UnityEngine.UIElements;
+﻿using System;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Leaframe.Manipulators.Gestures
 {
     public class SwipeGestureManipulator : Manipulator
     {
+        private Vector2 _initialPosition;
+        
         protected override void RegisterCallbacksOnTarget()
         {
+            target.RegisterCallback<DragEnterEvent>(OnDragEntered);
             target.RegisterCallback<DragUpdatedEvent>(OnDragUpdated);
-            target.RegisterCallback<DragLeaveEvent>(OnDragLeft);
+            target.RegisterCallback<DragExitedEvent>(OnDragExited);
         }
 
         protected override void UnregisterCallbacksFromTarget()
         {
+            target.UnregisterCallback<DragEnterEvent>(OnDragEntered);
             target.UnregisterCallback<DragUpdatedEvent>(OnDragUpdated);
-            target.UnregisterCallback<DragLeaveEvent>(OnDragLeft);
+            target.UnregisterCallback<DragExitedEvent>(OnDragExited);
+        }
+
+        private void OnDragEntered(DragEnterEvent evt)
+        {
+            _initialPosition = evt.mousePosition;
         }
 
         private void OnDragUpdated(DragUpdatedEvent evt)
@@ -21,9 +32,11 @@ namespace Leaframe.Manipulators.Gestures
             throw new System.NotImplementedException();
         }
 
-        private void OnDragLeft(DragLeaveEvent evt)
+        private void OnDragExited(DragExitedEvent evt)
         {
-            throw new System.NotImplementedException();
+            var dir = evt.mousePosition - _initialPosition;
+            throw new NotImplementedException();
+            //if(dir.magnitude > )
         }
     }
 }

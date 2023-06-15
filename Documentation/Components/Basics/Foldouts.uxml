@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Foldout text="Buttons">
+        <ui:Button text="Button" display-tooltip-when-elided="true" />
+        <ui:Button text="Button" display-tooltip-when-elided="true" class="success" />
+        <ui:Button text="Button" display-tooltip-when-elided="true" class="info" />
+    </ui:Foldout>
+    <ui:Foldout text="Alerts">
+        <Leaframe.Controls.Components.Alert tabindex="-1" type="Success" text="Success" style="position: relative; left: auto; top: auto; right: auto; flex-grow: 1;" />
+        <Leaframe.Controls.Components.Alert tabindex="-1" text="Info" style="position: relative; flex-grow: 1; left: auto; top: auto; right: auto;" />
+    </ui:Foldout>
+</ui:UXML>

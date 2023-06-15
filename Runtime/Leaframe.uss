@@ -1,4 +1,10 @@
 @import url("Components/Colors.uss");
 @import url("Components/Fonts.uss");
 @import url("Components/Buttons.uss");
+@import url("Components/Inputs.uss");
 @import url("Components/Alerts.uss");
+@import url("Components/Badges.uss");
+
+* {
+    -unity-background-scale-mode: scale-to-fit;
+}
