@@ -12,6 +12,7 @@
 
 - Add `Container` custom control to handle once `.first-child`, `.last-child`, `.even-child` and `.odd-child` ;
 - Add `Alert` custom control to display top information ;
+- Add `TabView` custom control to manage multiple sections inside the same block ;
 
 #### Manipulators
 

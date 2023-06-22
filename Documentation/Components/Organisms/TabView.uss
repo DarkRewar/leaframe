@@ -1,0 +1,3 @@
+.tab-view-content {
+    background-color: rgba(202, 202, 202, 0);
+}

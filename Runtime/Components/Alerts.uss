@@ -29,3 +29,18 @@
     background-color: var(--warning-color);
     border-color: var(--warning-border-color);
 }
+
+.alert-close {
+    background-color: var(--close-black-icon);
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    
+}
+
+.alert.success .alert-close ,
+.alert.error .alert-close ,
+.alert.info .alert-close ,
+.alert.warning .alert-close {
+    background-color: var(--close-white-icon);
+}

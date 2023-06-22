@@ -1,0 +1,4 @@
+:root {
+    --close-black-icon: resource("Icons/GameIcons/Black/cross");
+    --close-white-icon: resource("Icons/GameIcons/White/cross");
+}

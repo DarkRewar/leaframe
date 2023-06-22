@@ -1,0 +1,49 @@
+﻿.tab-view {}
+
+.tab-view-container {
+    flex-direction: row;
+}
+
+.tab-view-button {
+    flex-grow: 1;
+    -unity-text-align: middle-center;
+    padding: 30px;
+    border-bottom-width: 2px;
+    border-bottom-color: white;
+}
+
+.tab-view-button.active{
+    border-bottom-width: 4px;
+    border-bottom-color: var(--info-color);
+}
+
+.tab-view-section {
+    overflow: hidden;
+    flex-direction: row;
+}
+
+.tab-view-content {
+    flex-shrink: 0;
+    width: 100%;
+    display: none;
+}
+
+.tab-view-content-animated {
+    transition: margin-left 1s, display 0.1s ease-out 1s;
+}
+
+.tab-view-content-animated.exit-left {
+    margin-left: -100%;
+}
+.tab-view-content-animated.exit-right {
+    margin-left: 100%;
+}
+
+.tab-view-content.active {
+    display: flex;
+}
+
+.tab-view-content-animated.active {
+    margin-left: 0%;
+    transition: margin-left 0.5s, display 0s;
+}

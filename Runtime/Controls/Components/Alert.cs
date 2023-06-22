@@ -58,7 +58,10 @@ namespace Leaframe.Controls.Components
             }
         }
 
+        protected Label _label;
+
         public const string AlertClassname = "alert";
+        public const string AlertCloseClassname = "alert-close";
 
         public Alert() : this(AlertType.Info){}
 
@@ -66,6 +69,17 @@ namespace Leaframe.Controls.Components
         {
             AddToClassList(AlertClassname);
             Type = alertType;
+
+            //_label = new Label(text);
+
+            var closeButton = new Button(OnCloseClicked);
+            closeButton.AddToClassList(AlertCloseClassname);
+            //Add(closeButton);
+        }
+
+        private void OnCloseClicked()
+        {
+            this.RemoveFromHierarchy();
         }
 
         public Alert(AlertType alertType, string label, Action onClicked) : this(alertType)
