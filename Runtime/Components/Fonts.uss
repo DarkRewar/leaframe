@@ -7,3 +7,7 @@
     -unity-font: resource("Fonts/Oxygen-Regular");
     -unity-font-definition: resource("Fonts/Oxygen-Regular SDF");
 }
+
+.large-font {
+    font-size: var(--large-font-size);
+}

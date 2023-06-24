@@ -7,7 +7,7 @@
   "unityRelease": "0",
   "documentationUrl": "https://example.com/",
   "changelogUrl": "https://github.com/DarkRewar/leaframe/blob/master/CHANGELOG.md",
-  "licensesUrl": "https://github.com/DarkRewar/leaframe/blob/master/LICENSE",
+  "licensesUrl": "https://github.com/DarkRewar/leaframe/blob/master/LICENSE.md",
   "keywords": [
     "ui",
     "toolkit",
@@ -18,5 +18,12 @@
     "name": "Curtis Pelissier",
     "email": "curtis.pelissier@gmail.com",
     "url": "https://rewar.fr"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Login",
+      "description": "Contains sample for a login and register screen, using UITK and Leaframe.",
+      "path": "Samples~/Login"
+    }
+  ]
 }

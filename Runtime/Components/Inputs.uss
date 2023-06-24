@@ -13,16 +13,17 @@
 }
 
 .unity-toggle__checkmark {
-    --toggle-handle-size: 46px;
-    
+    --toggle-handle-size: 30px;
+
+    position: absolute;
+    height: var(--toggle-handle-size);
     background-image: initial;
     background-color: grey;
-    width: var(--toggle-handle-size);
-    height: var(--toggle-handle-size);
-    border-radius: 80px;
-    margin-left: -10px;
-    translate: 0 0;
-    transition: 0.35s ease-out;
+    width: initial;
+    left: 2px;
+    right: 40px;
+    border-radius: 15px;
+    transition: left 200ms ease-in-sine, right 200ms ease-out-sine 200ms;
 }
 
 .unity-toggle > .unity-toggle__input:checked {
@@ -31,6 +32,7 @@
 
 .unity-toggle:focus > .unity-toggle__input > .unity-toggle__checkmark,
 .unity-toggle:focus > .unity-toggle__input:checked > .unity-toggle__checkmark,
+.unity-toggle > .unity-toggle__input:checked:hover > .unity-toggle__checkmark,
 .unity-toggle > .unity-toggle__input:hover > .unity-toggle__checkmark,
 .unity-toggle > .unity-toggle__input:active > .unity-toggle__checkmark,
 .unity-toggle > .unity-toggle__input:checked > .unity-toggle__checkmark {
@@ -38,7 +40,10 @@
 }
 
 .unity-toggle > .unity-toggle__input:checked > .unity-toggle__checkmark {
-     translate: 100% 0;
+    /*translate: 100% 0;*/
+    left: 40px;
+    right: 2px;
+    transition: right 200ms ease-in-sine, left 200ms ease-out-sine 200ms;
 }
 
 /************ SLIDERS ************/
