@@ -1,4 +1,5 @@
 ﻿using System;
+using Leaframe.Runtime.Events;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -6,37 +7,41 @@ namespace Leaframe.Manipulators.Gestures
 {
     public class SwipeGestureManipulator : Manipulator
     {
-        private Vector2 _initialPosition;
+        private Vector2 _initialPosition = default;
         
         protected override void RegisterCallbacksOnTarget()
         {
-            target.RegisterCallback<DragEnterEvent>(OnDragEntered);
-            target.RegisterCallback<DragUpdatedEvent>(OnDragUpdated);
-            target.RegisterCallback<DragExitedEvent>(OnDragExited);
+            target.RegisterCallback<PointerDownEvent>(OnPointerDown);
+            target.RegisterCallback<PointerUpEvent>(OnPointerUp);
+        }
+
+        private void OnPointerDown(PointerDownEvent evt)
+        {
+            _initialPosition = evt.position;
         }
 
         protected override void UnregisterCallbacksFromTarget()
         {
-            target.UnregisterCallback<DragEnterEvent>(OnDragEntered);
-            target.UnregisterCallback<DragUpdatedEvent>(OnDragUpdated);
-            target.UnregisterCallback<DragExitedEvent>(OnDragExited);
+            target.UnregisterCallback<PointerDownEvent>(OnPointerDown);
+            target.UnregisterCallback<PointerUpEvent>(OnPointerUp);
         }
 
-        private void OnDragEntered(DragEnterEvent evt)
+        private void OnPointerUp(PointerUpEvent evt)
         {
-            _initialPosition = evt.mousePosition;
-        }
-
-        private void OnDragUpdated(DragUpdatedEvent evt)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnDragExited(DragExitedEvent evt)
-        {
-            var dir = evt.mousePosition - _initialPosition;
-            throw new NotImplementedException();
-            //if(dir.magnitude > )
+            if (_initialPosition.Equals(default)) return;
+            
+            var dir = ((Vector2)evt.position - _initialPosition).normalized;
+            _initialPosition = default;
+            using (var swipeEvent = SwipeEvent.GetPooled())
+            {
+                swipeEvent.target = target;
+                if (dir.x < -0.5f) swipeEvent.Direction |= SwipeDirection.Left;
+                if (dir.x > 0.5f) swipeEvent.Direction |= SwipeDirection.Right;
+                if (dir.y < -0.5f) swipeEvent.Direction |= SwipeDirection.Up;
+                if (dir.y > 0.5f) swipeEvent.Direction |= SwipeDirection.Down;
+                Debug.Log(dir);
+                target.SendEvent(swipeEvent);
+            }
         }
     }
 }

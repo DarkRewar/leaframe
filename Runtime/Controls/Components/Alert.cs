@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Leaframe.Manipulators.Gestures;
+using Leaframe.Runtime.Events;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Debug = UnityEngine.Debug;
@@ -75,6 +77,15 @@ namespace Leaframe.Controls.Components
             var closeButton = new Button(OnCloseClicked);
             closeButton.AddToClassList(AlertCloseClassname);
             //Add(closeButton);
+            
+            this.AddManipulator(new SwipeGestureManipulator());
+            RegisterCallback<SwipeEvent>(OnSwiped);
+        }
+
+        private void OnSwiped(SwipeEvent evt)
+        {
+            Debug.Log(evt.Direction);
+            this.style.display = DisplayStyle.None;
         }
 
         private void OnCloseClicked()
