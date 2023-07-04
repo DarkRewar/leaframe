@@ -9,7 +9,7 @@ namespace Leaframe.Controls.Charts
         public Color Color;
 
         public ChartDataSet(List<ChartData> chartDataList)
-            : this(chartDataList, Random.ColorHSV()){}
+            : this(chartDataList, Chart.Color){}
 
         public ChartDataSet(List<ChartData> chartDataList, Color color)
         {
@@ -23,20 +23,34 @@ namespace Leaframe.Controls.Charts
         public readonly double Value;
         public readonly string Id;
 
-        public ChartData(double value)
+        public ChartData(double value): this(value, string.Empty){}
+        public ChartData(double value, string id)
         {
             Value = value;
-            Id = string.Empty;
+            Id = id;
         }
     }
     
     public abstract class Chart : VisualElement
     {
+        protected static readonly Color[] _availableColors = new[]
+        {
+            new Color(46f/255, 204f/255, 113f/255),
+            new Color(231f/255, 76f/255, 60f/255),
+            new Color(52f/255, 152f/255, 219f/255),
+            new Color(243f/255, 156f/255, 18f/255),
+        };
+
+        protected static int _currentColorIndex = 0;
+
+        public static Color Color => _availableColors[(_currentColorIndex++) % (_availableColors.Length - 1)];
+        
+        
         protected const string ChartClassname = "chart";
 
-        private List<ChartDataSet> _dataSet;
+        protected List<ChartDataSet> _dataSet;
 
-        public List<ChartDataSet> DataSet
+        public virtual List<ChartDataSet> DataSet
         {
             get => _dataSet;
             set
