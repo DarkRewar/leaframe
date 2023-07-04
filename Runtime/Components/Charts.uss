@@ -1,0 +1,5 @@
+.chart-label {
+    font-size: var(--small-font-size);
+    -unity-text-align: middle-right;
+    width: 75px;
+}
