@@ -35,24 +35,45 @@ namespace Leaframe.Controls.Charts
 
         #endregion
 
-        public bool DisplayHorizontalLabels { get; protected set; } = true;
-        public bool DisplayVerticalLabels { get; protected set; } = true;
+        private bool _displayHorizontalLabels = true;
+        public bool DisplayHorizontalLabels
+        {
+            get => _displayHorizontalLabels;
+            protected set
+            {
+                _displayHorizontalLabels = value;
+                MarkDirtyRepaint();
+                RefreshLabels();
+            }
+        }
+        
+        private bool _displayVerticalLabels = true;
+        public bool DisplayVerticalLabels
+        {
+            get => _displayVerticalLabels;
+            protected set
+            {
+                _displayVerticalLabels = value;
+                MarkDirtyRepaint();
+                RefreshLabels();
+            }
+        }
 
         public virtual Rect ChartRect
         {
             get
             {
                 var content = contentRect;
-                content.x += 100;
-                content.y += 0;
-                content.width -= 100;
-                content.height -= 50;
+                content.x += DisplayVerticalLabels ? 100 : 25;
+                content.width -= DisplayVerticalLabels ? 100 : 25;
+                content.height -= DisplayHorizontalLabels ? 75 : 25;
                 return content;
             }
         }
         
         protected const string AxesChartClassname = "axes-chart";
         protected const string ChartLabelClassname = "chart-label";
+        protected const string HorizontalChartLabelClassname = "horizontal-chart-label";
 
         public AxesChart()
         {
@@ -62,22 +83,61 @@ namespace Leaframe.Controls.Charts
             RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
         }
 
-        private void OnGeometryChanged(GeometryChangedEvent evt)
+        private void OnGeometryChanged(GeometryChangedEvent _) => RefreshLabels();
+
+        private void RefreshLabels()
         {
             Clear();
 
             var rect = ChartRect;
-            (int minStep, int maxStep) = ComputeMinMaxSteps();
+            CreateVerticalLabels(rect);
+            CreateHorizontalLabels(rect);
+        }
+
+        private void CreateVerticalLabels(Rect rect)
+        {
+            if (!DisplayVerticalLabels) return;
             
+            (int minStep, int maxStep) = ComputeMinMaxSteps();
             int numberOfSteps = DetermineNumberOfSteps();
-            for (int i = 0; i <= numberOfSteps; ++i)
+            int i = 0;
+            for (; i <= numberOfSteps; ++i)
             {
                 var y = Mathf.Lerp(rect.yMax, rect.yMin, (float)i/numberOfSteps);
-                var label = new Label($"{Mathf.Lerp(minStep, maxStep, (float)i / numberOfSteps):### ### ##0}");
+                var label = new Label($"{Mathf.Lerp(minStep, maxStep, (float)i / numberOfSteps):###,###,##0}");
                 label.AddToClassList(ChartLabelClassname);
                 Add(label);
                 label.style.position = Position.Absolute;
                 label.style.top = Mathf.RoundToInt(y - 20);
+            }
+        }
+
+        private void CreateHorizontalLabels(Rect rect)
+        {
+            if (!DisplayHorizontalLabels) return;
+            
+            int labelCount = Labels.Count;
+            for (int i = 0; i < labelCount; ++i)
+            {
+                var x = Mathf.Lerp(rect.xMin, rect.xMax, (float)i / (labelCount - 1));
+                var label = new Label(Labels[i]);
+                label.AddToClassList(ChartLabelClassname);
+                label.AddToClassList(HorizontalChartLabelClassname);
+                Add(label);
+                label.style.position = Position.Absolute;
+                label.style.left = x;
+                label.style.top = rect.yMax + 25;
+
+                label.schedule.Execute(_ =>
+                {
+                    var labelRect = label.localBound;
+                    if (labelRect.xMin < rect.xMin)
+                        label.style.left = rect.xMin;
+                    else if (labelRect.xMax > rect.xMax)
+                        label.style.left = x - label.contentRect.width;
+                    else
+                        label.style.left = x - label.contentRect.width / 2;
+                });
             }
         }
 
