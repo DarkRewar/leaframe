@@ -3,3 +3,8 @@
     -unity-text-align: middle-right;
     width: 75px;
 }
+
+.axes-chart {
+    padding-right: 20px;
+    padding-top: 20px;
+}
