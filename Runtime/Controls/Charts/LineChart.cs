@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace Leaframe.Controls.Charts
 {
-    public class LineChart : Chart
+    public class LineChart : AxesChart
     {
         #region TRAITS & FACTORY
 
@@ -21,13 +21,8 @@ namespace Leaframe.Controls.Charts
         }
 
         [Preserve]
-        public new class UxmlTraits : Chart.UxmlTraits
+        public new class UxmlTraits : AxesChart.UxmlTraits
         {
-            private readonly UxmlIntAttributeDescription _numberOfSteps = new()
-            {
-                name = "number-of-steps",
-            };
-            
             private readonly UxmlBoolAttributeDescription _displayDots = new()
             {
                 name = "display-dots",
@@ -63,23 +58,7 @@ namespace Leaframe.Controls.Charts
         public bool DisplayDots { get; private set; } = true;
         public SteppedLineType SteppedLine { get; private set; }
 
-        public Rect ChartRect
-        {
-            get
-            {
-                var content = contentRect;
-                content.x += 100;
-                content.y += 0;
-                content.width -= 100;
-                content.height -= 50;
-                return content;
-            }
-        }
-
-        private const float _heightPadding = 10;
-
         private const string LineChartClassname = "line-chart";
-        private const string ChartLabelClassname = "chart-label";
 
         public LineChart()
         {
@@ -112,99 +91,26 @@ namespace Leaframe.Controls.Charts
             };
             
             generateVisualContent += OnGenerateVisualContent;
-            RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
-        }
-
-        private void OnGeometryChanged(GeometryChangedEvent evt)
-        {
-            Clear();
-
-            var rect = ChartRect;
-            (double minValue, double maxValue) = ComputeMinMax();
-            double padding = 10; //percent
-            double totalHeight = (maxValue - minValue) * 100f / (100-padding*2);
-            float maxStep = (float)(maxValue + totalHeight / padding);
-            float minStep = (float)(minValue - totalHeight / padding);
-            
-            int numberOfSteps = 6;
-            for (int i = 0; i <= numberOfSteps; ++i)
-            {
-                var y = Mathf.Lerp(rect.yMax, rect.yMin, (float)i/numberOfSteps);
-                var label = new Label($"{Mathf.Lerp(minStep, maxStep, (float)i / numberOfSteps):0}");
-                label.AddToClassList(ChartLabelClassname);
-                Add(label);
-                label.style.position = Position.Absolute;
-                label.style.top = Mathf.RoundToInt(y - 20);
-            }
         }
 
         private void OnGenerateVisualContent(MeshGenerationContext obj)
         {
             var painter = obj.painter2D;
-            (double minValue, double maxValue) = ComputeMinMax();
-            DrawSteps(painter, minValue, maxValue);
-            DrawAxes(painter);
             DrawLines(painter);
-        }
-
-        private (double minValue, double maxValue) ComputeMinMax()
-        {
-            return (_dataSet.Min(set => set.Min(data => data.Value)), 
-                _dataSet.Max(set => set.Max(data => data.Value)));
-        }
-
-        private void DrawAxes(Painter2D painter)
-        {
-            painter.strokeColor = Color.black;
-            painter.lineWidth = 5;
-            var rect = ChartRect;
-            painter.BeginPath();
-            painter.MoveTo(new Vector2(rect.xMin, rect.yMin));
-            painter.LineTo(new Vector2(rect.xMin, rect.yMax));
-            painter.LineTo(new Vector2(rect.xMax, rect.yMax));
-            painter.Stroke();
-        }
-
-        private void DrawSteps(Painter2D painter, double minValue, double maxValue)
-        {
-            var rect = ChartRect;
-            double padding = _heightPadding; //percent
-            double totalHeight = (maxValue - minValue) * 100f / (100-padding*2);
-            float maxStep = (float)(maxValue + totalHeight / padding);
-            float minStep = (float)(minValue - totalHeight / padding);
-
-            painter.lineWidth = 2;
-            painter.strokeColor = new Color(0, 0, 0, 0.2f);
-            
-            int numberOfSteps = 6;
-            for (int i = 0; i <= numberOfSteps; ++i)
-            {
-                var y = Mathf.Lerp(rect.yMax, rect.yMin, (float)i/numberOfSteps);
-                painter.BeginPath();
-                painter.MoveTo(new Vector2(rect.xMin-20, y));
-                painter.LineTo(new Vector2(rect.xMax, y));
-                painter.Stroke();
-            }
-
-            for (int j = 0; j < _dataSet[0].Count; ++j)
-            {
-                var x = Mathf.Lerp(rect.xMin, rect.xMax, (float)j/(_dataSet[0].Count-1));
-                painter.BeginPath();
-                painter.MoveTo(new Vector2(x, rect.yMin));
-                painter.LineTo(new Vector2(x, rect.yMax+20));
-                painter.Stroke();
-            }
         }
 
         private void DrawLines(Painter2D painter)
         {
             var rect = this.ChartRect;
             
-            Vector2 GetPoint(int i, ChartDataSet dataSet, double maxValue)
+            (int minStep, int maxStep) = ComputeMinMaxSteps();
+
+            Vector2 GetPoint(int i, ChartDataSet dataSet)
             {
+                var y = (dataSet[i].Value + Math.Abs(minStep)) / (maxStep + Math.Abs(minStep));
                 return new Vector2(
                     Mathf.Lerp(rect.xMin, rect.xMax, ((float)i) / (dataSet.Count - 1)),
-                    Mathf.Lerp(rect.yMax - (rect.yMax / _heightPadding), rect.yMin + (rect.yMax / _heightPadding), (float)(dataSet[i].Value / maxValue)));
+                    Mathf.Lerp(rect.yMax, rect.yMin, (float)y));
             }
             
             foreach (var dataSet in DataSet)
@@ -214,9 +120,9 @@ namespace Leaframe.Controls.Charts
                 painter.lineCap = LineCap.Round;
                 painter.lineWidth = 5;
                 
-                var minValue = dataSet.Min(x => x.Value);
-                var maxValue = dataSet.Max(x => x.Value);
-                var previousPoint = GetPoint(0, dataSet, maxValue);
+                // var minValue = dataSet.Min(x => x.Value);
+                // var maxValue = dataSet.Max(x => x.Value);
+                var previousPoint = GetPoint(0, dataSet);
                 var point = previousPoint;
                 
                 painter.BeginPath();
@@ -225,7 +131,7 @@ namespace Leaframe.Controls.Charts
                 for (int i = 1; i < dataSet.Count; i++)
                 {
                     previousPoint = point;
-                    point = GetPoint(i, dataSet, maxValue);
+                    point = GetPoint(i, dataSet);
                     
                     switch (SteppedLine)
                     { 
@@ -244,10 +150,10 @@ namespace Leaframe.Controls.Charts
                             painter.LineTo(point);
                             break;
                         case SteppedLineType.Curve:
-                            var subPrevious = GetPoint(i - 2 < 0 ? i - 1 : i-2, dataSet, maxValue);
+                            var subPrevious = GetPoint(i - 2 < 0 ? i - 1 : i-2, dataSet);
                             var previous = previousPoint;
                             var current = point;
-                            var next = GetPoint(i == dataSet.Count - 1 ? i : i + 1, dataSet, maxValue);
+                            var next = GetPoint(i == dataSet.Count - 1 ? i : i + 1, dataSet);
 
                             var controlPoints1 = GetControlPoints(subPrevious, previous, current);
                             var controlPoints2 = GetControlPoints(previousPoint, current, next);
@@ -266,7 +172,7 @@ namespace Leaframe.Controls.Charts
                     for (int i = 0; i < dataSet.Count; i++)
                     {
                         painter.BeginPath();
-                        painter.Arc(GetPoint(i, dataSet, maxValue), 5, 0, 360);
+                        painter.Arc(GetPoint(i, dataSet), 5, 0, 360);
                         painter.Fill();
                     }
                 }
