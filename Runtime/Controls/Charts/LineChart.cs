@@ -169,10 +169,14 @@ namespace Leaframe.Controls.Charts
 
                 if (DisplayDots)
                 {
+                    int dotRadius = 20;
+                    
                     for (int i = 0; i < dataSet.Count; i++)
                     {
+                        var valuePoint = GetPoint(i, dataSet);
+                        var radius = Vector2.Distance(CursorPosition, valuePoint) < dotRadius ? 10 : 5;
                         painter.BeginPath();
-                        painter.Arc(GetPoint(i, dataSet), 5, 0, 360);
+                        painter.Arc(valuePoint, radius, 0, 360);
                         painter.Fill();
                     }
                 }
@@ -195,16 +199,22 @@ namespace Leaframe.Controls.Charts
             var d12=Math.Sqrt(Math.Pow(next.x-current.x,2)+Math.Pow(next.y-current.y,2));
             var fa=tension * d01/(d01+d12);   // scaling factor for triangle Ta
             var fb=tension * d12/(d01+d12);   // ditto for Tb, simplifies to fb=t-fa
-            var p1x=(float)(current.x-fa*(next.x-previous.x));    // x2-x0 is the width of triangle T
-            var p1y=(float)(current.y-fa*(next.y-previous.y));    // y2-y0 is the height of T
-            var p2x=(float)(current.x+fb*(next.x-previous.x));
-            var p2y=(float)(current.y+fb*(next.y-previous.y));  
+            var p1x = (float)(current.x-fa*(next.x-previous.x));    // x2-x0 is the width of triangle T
+            var p1y = (float)(current.y-fa*(next.y-previous.y));    // y2-y0 is the height of T
+            var p2x = (float)(current.x+fb*(next.x-previous.x));
+            var p2y = (float)(current.y+fb*(next.y-previous.y));  
             return (new(p1x,p1y), new(p2x,p2y));
         }
 
         protected override void OnDataSetChanged(List<ChartDataSet> dataSet)
         {
             
+        }
+
+        protected override void OnCursorPositionChanged(Vector2 cursorPosition)
+        {
+            base.OnCursorPositionChanged(cursorPosition);
+            MarkDirtyRepaint();
         }
     }
 }

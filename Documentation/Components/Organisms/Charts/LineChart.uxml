@@ -1,3 +1,3 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Leaframe.Controls.Charts.LineChart curve-line="false" stepped-line="Curve" style="height: 588px;" />
+    <Leaframe.Controls.Charts.LineChart curve-line="false" stepped-line="Curve" display-vertical-labels="true" display-horizontal-labels="true" style="height: 600px;" />
 </ui:UXML>
