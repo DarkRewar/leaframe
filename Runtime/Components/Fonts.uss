@@ -1,13 +1,52 @@
 ﻿:root {
-    --large-font-size: 42px;
-    --default-font-size: 36px;
-    --small-font-size: 30px;
+    --default-font-size: 16px;
+    --small-font-size: 14px;
+    
+    --h1-font-size: 32px;
+    --h2-font-size: 28px;
+    --h3-font-size: 24px;
+    --h4-font-size: 20px;
+    --h5-font-size: 16px;
+    --h6-font-size: 12px;
     
     font-size: var(--default-font-size);
     -unity-font: resource("Fonts/Oxygen-Regular");
     -unity-font-definition: resource("Fonts/Oxygen-Regular SDF");
+    color: #000000;
 }
 
 .large-font {
     font-size: var(--large-font-size);
+}
+
+.small-font, .light-font {
+    font-size: var(--small-font-size);
+}
+
+.light-font {
+    color: var(--primary-color-shade-3);
+}
+
+.h1, .h1-font {
+    font-size: var(--h1-font-size);
+}
+
+.h2, .h2-font {
+    font-size: var(--h2-font-size);
+}
+
+.h3, .h3-font {
+    font-size: var(--h3-font-size);
+}
+
+.h4, .h4-font {
+    font-size: var(--h4-font-size);
+}
+
+.h5, .h5-font {
+    font-size: var(--h5-font-size);
+}
+
+.h6, .h6-font {
+    font-size: var(--h6-font-size);
 }

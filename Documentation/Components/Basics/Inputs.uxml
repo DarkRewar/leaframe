@@ -3,7 +3,6 @@
     <ui:Toggle label="Toggle" />
     <ui:TextField picking-mode="Ignore" label="Text Field" value="filler text" />
     <ui:Slider picking-mode="Ignore" label="Slider" value="42" high-value="100" />
-    <ui:RadioButtonGroup label="Radio Button Group" value="-1" choices="UnityEngine.UIElements.RadioButtonGroup+&lt;get_choices&gt;d__7" />
     <ui:SliderInt picking-mode="Ignore" label="SliderInt" value="42" high-value="100" />
     <ui:MinMaxSlider picking-mode="Ignore" label="Min/Max Slider" min-value="10" max-value="12" low-limit="-10" high-limit="40" />
     <ui:IntegerField label="Integer Field" value="42" />

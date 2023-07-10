@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Label tabindex="-1" text="Default Font Size&#10;Oxygen Regular&#10;#000000" display-tooltip-when-elided="true" />
+    <ui:Label tabindex="-1" text="Small Font Size" display-tooltip-when-elided="true" class="small-font" />
+    <ui:Label tabindex="-1" text="Light Font Size" display-tooltip-when-elided="true" class="light-font" />
+</ui:UXML>

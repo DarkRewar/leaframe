@@ -3,20 +3,37 @@
     align-items: center;
     padding: 16px 32px;
     position: relative;
-    background-color: var(--normal-color);
+    background-color: var(--primary-color);
+    color: var(--primary-color-shade-6);
     border-radius: 15px;
     border-width: 0;
-    /*border-color: rgba(0, 0, 0, 0.2);*/
-    /*border-bottom-width: 8px;*/
+    -unity-text-align: middle-center;
     flex-direction: row;
     -unity-font-style: bold;
 }
 
-.unity-button.success,
-.unity-button.error,
-.unity-button.info,
-.unity-button.warning {
-    color: white;
+.unity-button.blank {
+    background-color: initial;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    border-width: 3px;
+    padding: 13px 29px;
+}
+
+.unity-button.secondary,
+.unity-button.peach {
+    background-color: var(--secondary-color-peach);
+    color: var(--primary-color);
+}
+
+.unity-button.sand {
+    background-color: var(--secondary-color-sand);
+    color: var(--primary-color);
+}
+
+.unity-button.neutral {
+    background-color: var(--secondary-color-neutral);
+    color: var(--primary-color);
 }
 
 .unity-button.success {

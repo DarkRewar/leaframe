@@ -11,6 +11,18 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
+        <ui:VisualElement class="badge blank" style="align-self: center;">
+            <ui:Label tabindex="-1" text=".badge.blank" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge peach" style="align-self: center;">
+            <ui:Label tabindex="-1" text=".badge.peach" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge sand" style="align-self: center;">
+            <ui:Label tabindex="-1" text=".badge.sand" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge neutral" style="align-self: center;">
+            <ui:Label tabindex="-1" text=".badge.neutral" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
         <ui:VisualElement class="badge success" style="align-self: center;">
             <ui:Label tabindex="-1" text=".badge.success" display-tooltip-when-elided="true" />
         </ui:VisualElement>
@@ -26,15 +38,19 @@
     </ui:VisualElement>
     <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
         <ui:VisualElement class="badge" style="align-self: center;">
-            <ui:VisualElement class="badge-icon" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+            <ui:VisualElement class="badge-icon" style="background-image: resource(&apos;Icons/GameIcons/White/power&apos;);" />
             <ui:Label tabindex="-1" text=".badge" display-tooltip-when-elided="true" />
         </ui:VisualElement>
         <ui:VisualElement class="badge" style="align-self: center;">
             <ui:Label tabindex="-1" text=".badge" display-tooltip-when-elided="true" />
-            <ui:Button display-tooltip-when-elided="true" class="badge-close" style="width: 40px;" />
+            <ui:Button display-tooltip-when-elided="true" class="badge-close" />
         </ui:VisualElement>
         <ui:VisualElement class="badge success" style="align-self: center;">
-            <ui:Label tabindex="-1" text=".badge" display-tooltip-when-elided="true" />
+            <ui:Label tabindex="-1" text=".badge.success" display-tooltip-when-elided="true" />
+            <ui:Button display-tooltip-when-elided="true" class="badge-close" />
+        </ui:VisualElement>
+        <ui:VisualElement class="badge peach" style="align-self: center;">
+            <ui:Label tabindex="-1" text=".badge.peach" display-tooltip-when-elided="true" />
             <ui:Button display-tooltip-when-elided="true" class="badge-close" />
         </ui:VisualElement>
     </ui:VisualElement>

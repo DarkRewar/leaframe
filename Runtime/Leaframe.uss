@@ -6,6 +6,7 @@
 @import url("Components/Alerts.uss");
 @import url("Components/Badges.uss");
 @import url("Components/TabView.uss");
+@import url("Components/Foldouts.uss");
 
 * {
     -unity-background-scale-mode: scale-to-fit;

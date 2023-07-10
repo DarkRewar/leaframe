@@ -1,32 +1,54 @@
 ﻿.badge {
     padding: 8px 16px;
-    border-radius: 40px;
-    background-color: var(--normal-color);
+    border-radius: 20px;
+    -unity-text-align: middle-center;
+    background-color: var(--primary-color);
+    color: var(--white-color);
     flex-direction: row;
     align-self: center;
     margin: 3px;
 }
 
 .badge-icon {
-    width: 54px;
-    height: 54px;
-    background-color: white;
-    margin: 0 10px;
+    margin-right: 10px;
+    height: 20px;
+    width: 20px;
 }
 
 .badge.small {
     font-size: var(--small-font-size);
+    border-radius: 18px;
 }
 
 .badge.large {
-    font-size: var(--large-font-size);
+    font-size: var(--h4-font-size);
+    border-radius: 22px;
 }
 
-.badge.success,
-.badge.error,
-.badge.info,
-.badge.warning {
-    color: white;
+.badge.blank,
+.badge.peach,
+.badge.sand,
+.badge.neutral {
+    color: var(--primary-color);
+}
+
+.badge.blank {
+    background-color: rgba(0,0,0,0);
+    border-width: 3px;
+    border-color: var(--primary-color);
+    padding: 5px 13px;
+}
+
+.badge.peach {
+    background-color: var(--secondary-color-peach);
+}
+
+.badge.sand {
+    background-color: var(--secondary-color-sand);
+}
+
+.badge.neutral {
+    background-color: var(--secondary-color-neutral);
 }
 
 .badge.success {
@@ -47,18 +69,18 @@
 
 .badge-close {
     align-self: center;
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
     padding: initial;
     border-radius: initial;
     border-width: initial;
     background-color: initial;
-    background-image: resource("Icons/GameIcons/Black/cross");
+    background-image: resource("Icons/GameIcons/White/cross");
 }
 
-.badge.success .badge-close,
-.badge.error .badge-close,
-.badge.info .badge-close,
-.badge.warning .badge-close {
-    background-image: resource("Icons/GameIcons/White/cross");
+.badge.peach .badge-close,
+.badge.sand .badge-close,
+.badge.neutral .badge-close {
+    background-image: resource("Icons/GameIcons/Black/cross");
 }

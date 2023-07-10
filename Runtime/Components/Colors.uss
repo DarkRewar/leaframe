@@ -1,12 +1,27 @@
 :root {
     --normal-color: #dddddd;
-    --success-color: #2ecc71;
-    --error-color: #e74c3c;
-    --info-color: #3498db;
-    --warning-color: #f39c12;
+    
+    --primary-color: #111D6F;
+    --primary-color-shade-1: #353F85; /* opacity-like: 85% */
+    --primary-color-shade-2: #58619A; /* opacity-like: 70% */
+    --primary-color-shade-3: #888EB7; /* opacity-like: 50% */
+    --primary-color-shade-4: #B8BBD4; /* opacity-like: 30% */
+    --primary-color-shade-5: #E7E8F1; /* opacity-like: 10% */
+    --primary-color-shade-6: #F3F4F8; /* opacity-like: 5% */
+    
+    --secondary-color-peach: #FFA378;
+    --secondary-color-sand: #FFCE85;
+    --secondary-color-neutral: #E0FFFF;
+    
+    --success-color: #4BCC76;
+    --error-color: #CC3B37;
+    --info-color: #2196FF;
+    --warning-color:  #F28F16;
 
     --success-border-color: #1d9650;
     --error-border-color: #8f2f25;
     --info-border-color: #1f78b3;
     --warning-border-color: #b7760e;
+    
+    --white-color: var(--primary-color-shade-6);
 }

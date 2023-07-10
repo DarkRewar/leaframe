@@ -7,14 +7,15 @@
 .tab-view-button {
     flex-grow: 1;
     -unity-text-align: middle-center;
-    padding: 30px;
+    padding: 16px 32px;
     border-bottom-width: 2px;
     border-bottom-color: white;
+    font-size: var(--h2-font-size);
 }
 
 .tab-view-button.active{
     border-bottom-width: 4px;
-    border-bottom-color: var(--info-color);
+    border-bottom-color: var(--primary-color);
 }
 
 .tab-view-section {
