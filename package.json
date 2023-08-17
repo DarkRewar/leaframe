@@ -4,7 +4,7 @@
   "displayName": "Leaframe",
   "description": "An Unity UI Toolkit theme and USS framework for your runtime game UIs",
   "unity": "2022.3",
-  "unityRelease": "0",
+  "unityRelease": "0f1",
   "documentationUrl": "https://example.com/",
   "changelogUrl": "https://github.com/DarkRewar/leaframe/blob/master/CHANGELOG.md",
   "licensesUrl": "https://github.com/DarkRewar/leaframe/blob/master/LICENSE.md",
