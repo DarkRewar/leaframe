@@ -24,12 +24,15 @@ namespace Leaframe.Controls.Charts
     {
         public readonly double Value;
         public readonly string Id;
+        public readonly Color Color;
 
         public ChartData(double value): this(value, string.Empty){}
-        public ChartData(double value, string id)
+        
+        public ChartData(double value, string id, Color color = default)
         {
             Value = value;
             Id = id;
+            Color = color;
         }
     }
     
