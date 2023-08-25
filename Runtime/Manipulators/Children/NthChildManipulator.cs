@@ -70,7 +70,7 @@ namespace Leaframe.Manipulators.Children
 
         protected override bool IsValidChild(int index, int count) =>
             _count.HasValue 
-                ? (index % _count) + _offset == _index 
-                : index == _index;
+                ? ((index + 1) % _count) + _offset == _index 
+                : index + 1 == _index;
     }
 }
