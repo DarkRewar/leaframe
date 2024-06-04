@@ -9,6 +9,41 @@
     padding-top: 20px;
 }
 
+.axes-chart__labels-container{
+    position:absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
 .horizontal-chart-label {
     width: auto;
+}
+
+.bar-chart {
+    padding-bottom: 25px;
+}
+
+.bar-chart-container {
+    flex: 1;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-evenly;
+}
+
+.bar-chart-entry {
+    width: 100px;
+    background-color: var(--primary-color);
+    -unity-text-align: upper-center;
+}
+
+.bar-chart-entry__label {
+    position: absolute;
+    bottom: -45px;
+    width: 100px;
+}
+
+.bar-chart-entry__value {
+    color: white;
 }

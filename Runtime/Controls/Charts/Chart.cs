@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,23 +10,32 @@ namespace Leaframe.Controls.Charts
         public Color Color;
 
         public ChartDataSet(List<ChartData> chartDataList)
-            : this(chartDataList, Chart.Color){}
+            : this(chartDataList, Chart.Color) { }
 
         public ChartDataSet(List<ChartData> chartDataList, Color color)
         {
             Color = color;
             this.AddRange(chartDataList);
         }
+
+        internal Color GetColor(ChartData entry)
+        {
+            return entry.Color == default
+                ? Color == default
+                    ? Color
+                    : Color
+                : entry.Color;
+        }
     }
-    
+
     public struct ChartData
     {
         public readonly double Value;
         public readonly string Id;
         public readonly Color Color;
 
-        public ChartData(double value): this(value, string.Empty){}
-        
+        public ChartData(double value) : this(value, string.Empty) { }
+
         public ChartData(double value, string id, Color color = default)
         {
             Value = value;
@@ -35,7 +43,7 @@ namespace Leaframe.Controls.Charts
             Color = color;
         }
     }
-    
+
     public abstract class Chart : VisualElement
     {
         protected static readonly Color[] _availableColors = new[]
@@ -61,7 +69,7 @@ namespace Leaframe.Controls.Charts
                 OnCursorPositionChanged(_cursorPosition);
             }
         }
-        
+
         protected const string ChartClassname = "chart";
 
         protected List<ChartDataSet> _dataSet;
@@ -83,7 +91,7 @@ namespace Leaframe.Controls.Charts
         protected Chart()
         {
             AddToClassList(ChartClassname);
-            
+
             RegisterCallback<PointerMoveEvent>(OnPointerMoved);
             RegisterCallback<PointerDownEvent>(OnPointerDown);
         }
@@ -97,8 +105,8 @@ namespace Leaframe.Controls.Charts
         {
             CursorPosition = evt.localPosition;
         }
-        
-        protected virtual void OnCursorPositionChanged(Vector2 cursorPosition){}
+
+        protected virtual void OnCursorPositionChanged(Vector2 cursorPosition) { }
 
         protected abstract void OnDataSetChanged(List<ChartDataSet> dataSet);
     }

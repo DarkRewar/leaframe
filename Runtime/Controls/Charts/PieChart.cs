@@ -14,14 +14,14 @@ namespace Leaframe.Controls.Charts
         public new class UxmlFactory : UxmlFactory<PieChart, UxmlTraits>
         {
             public override string uxmlName => nameof(PieChart);
-            
+
             public override string uxmlNamespace => "Leaframe.Charts";
         }
 
         [Preserve]
         public new class UxmlTraits : Chart.UxmlTraits
         {
-            
+
         }
 
         #endregion
@@ -42,7 +42,7 @@ namespace Leaframe.Controls.Charts
                     new(37, "Warning", new Color32(0xF2, 0x8F, 0x16,  255)),
                 })
             };
-            
+
             generateVisualContent += OnGenerateVisualContent;
         }
 
@@ -53,7 +53,7 @@ namespace Leaframe.Controls.Charts
             painter.fillColor = Color.white;
 
             float radius = Mathf.Min(contentRect.width, contentRect.height) / 2;
-            
+
             float angle = 0.0f;
             float anglePct = 0.0f;
             int k = 0;
