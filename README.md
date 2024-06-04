@@ -16,13 +16,13 @@ with custom controls and navigation system.
 - Alert
 - TabView
 - Badges
+- Charts (pie, bar, line)
 
 ### Planned
 
 - Gestures (swipe, long press, drag)
 - Modals
 - Navigation System 
-- Charts (pie, bar, line)
 
 ## Installation
 
