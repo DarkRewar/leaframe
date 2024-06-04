@@ -17,7 +17,7 @@ namespace Leaframe.Controls.Charts
                 name = "display-horizontal-labels",
                 defaultValue = true
             };
-            
+
             protected readonly UxmlBoolAttributeDescription _displayVerticalLabels = new()
             {
                 name = "display-vertical-labels",
@@ -46,7 +46,7 @@ namespace Leaframe.Controls.Charts
                 RefreshLabels();
             }
         }
-        
+
         private bool _displayVerticalLabels = true;
         public bool DisplayVerticalLabels
         {
@@ -64,21 +64,31 @@ namespace Leaframe.Controls.Charts
             get
             {
                 var content = contentRect;
-                content.x += DisplayVerticalLabels ? 100 : 25;
-                content.width -= DisplayVerticalLabels ? 100 : 25;
-                content.height -= DisplayHorizontalLabels ? 75 : 25;
+                content.x += (DisplayVerticalLabels ? 100 : 25);
+                content.width -= (DisplayVerticalLabels ? 100 : 25);
+                content.height -= (DisplayHorizontalLabels ? 75 : 25);
                 return content;
             }
         }
-        
+
+        protected VisualElement _labelsContainer;
+
         protected const string AxesChartClassname = "axes-chart";
+        protected const string AxesChartLabelsContainerClassname = "axes-chart__labels-container";
         protected const string ChartLabelClassname = "chart-label";
         protected const string HorizontalChartLabelClassname = "horizontal-chart-label";
+
+        protected const int AxeLineWidth = 5;
+        protected const int StepLineWidth = 2;
 
         public AxesChart()
         {
             AddToClassList(AxesChartClassname);
-            
+
+            _labelsContainer = new VisualElement();
+            _labelsContainer.AddToClassList(AxesChartLabelsContainerClassname);
+            Add(_labelsContainer);
+
             generateVisualContent += OnGenerateVisualContent;
             RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
         }
@@ -87,7 +97,7 @@ namespace Leaframe.Controls.Charts
 
         private void RefreshLabels()
         {
-            Clear();
+            _labelsContainer.Clear();
 
             var rect = ChartRect;
             CreateVerticalLabels(rect);
@@ -97,25 +107,26 @@ namespace Leaframe.Controls.Charts
         private void CreateVerticalLabels(Rect rect)
         {
             if (!DisplayVerticalLabels) return;
-            
+
             (int minStep, int maxStep) = ComputeMinMaxSteps();
             int numberOfSteps = DetermineNumberOfSteps();
             int i = 0;
             for (; i <= numberOfSteps; ++i)
             {
-                var y = Mathf.Lerp(rect.yMax, rect.yMin, (float)i/numberOfSteps);
+                var y = Mathf.Lerp(rect.yMax, rect.yMin, (float)i / numberOfSteps);
                 var label = new Label($"{Mathf.Lerp(minStep, maxStep, (float)i / numberOfSteps):###,###,##0}");
                 label.AddToClassList(ChartLabelClassname);
-                Add(label);
+                _labelsContainer.Add(label);
                 label.style.position = Position.Absolute;
-                label.style.top = Mathf.RoundToInt(y - 20);
+                //label.style.top = Mathf.RoundToInt(y - 20);
+                label.style.top = Mathf.RoundToInt(y);
             }
         }
 
         private void CreateHorizontalLabels(Rect rect)
         {
             if (!DisplayHorizontalLabels) return;
-            
+
             int labelCount = Labels.Count;
             for (int i = 0; i < labelCount; ++i)
             {
@@ -123,7 +134,7 @@ namespace Leaframe.Controls.Charts
                 var label = new Label(Labels[i]);
                 label.AddToClassList(ChartLabelClassname);
                 label.AddToClassList(HorizontalChartLabelClassname);
-                Add(label);
+                _labelsContainer.Add(label);
                 label.style.position = Position.Absolute;
                 label.style.left = x;
                 label.style.top = rect.yMax + 25;
@@ -143,15 +154,17 @@ namespace Leaframe.Controls.Charts
 
         protected (double minValue, double maxValue) ComputeMinMax()
         {
-            return (_dataSet.Min(set => set.Min(data => data.Value)), 
+            return _dataSet == null
+                ? (0, 0)
+                : (_dataSet.Min(set => set.Min(data => data.Value)),
                 _dataSet.Max(set => set.Max(data => data.Value)));
         }
 
         protected (int minStep, int maxStep) ComputeMinMaxSteps()
         {
             (double minValue, double maxValue) = ComputeMinMax();
-            var unit = Mathf.FloorToInt(Mathf.Log10((float)(maxValue-minValue + 1)));
-            unit = unit == 0 ? 1 : unit-1;
+            var unit = Mathf.FloorToInt(Mathf.Log10((float)(maxValue - minValue + 1)));
+            unit = unit == 0 ? 1 : unit - 1;
             unit = (int)Math.Pow(10, unit);
             int minStep = unit * Mathf.FloorToInt((float)minValue / unit);
             int maxStep = unit * Mathf.CeilToInt((float)maxValue / unit);
@@ -167,11 +180,11 @@ namespace Leaframe.Controls.Charts
             DrawSteps(painter, minValue, maxValue);
             DrawAxes(painter);
         }
-        
+
         private void DrawAxes(Painter2D painter)
         {
             painter.strokeColor = Color.black;
-            painter.lineWidth = 5;
+            painter.lineWidth = AxeLineWidth;
             var rect = ChartRect;
             painter.BeginPath();
             painter.MoveTo(new Vector2(rect.xMin, rect.yMin));
@@ -184,25 +197,25 @@ namespace Leaframe.Controls.Charts
         {
             var rect = ChartRect;
 
-            painter.lineWidth = 2;
+            painter.lineWidth = StepLineWidth;
             painter.strokeColor = new Color(0, 0, 0, 0.2f);
 
             int numberOfSteps = DetermineNumberOfSteps();
             for (int i = 0; i <= numberOfSteps; ++i)
             {
-                var y = Mathf.Lerp(rect.yMax, rect.yMin, (float)i/numberOfSteps);
+                var y = Mathf.Lerp(rect.yMax, rect.yMin, (float)i / numberOfSteps);
                 painter.BeginPath();
-                painter.MoveTo(new Vector2(rect.xMin-20, y));
+                painter.MoveTo(new Vector2(rect.xMin - 20, y));
                 painter.LineTo(new Vector2(rect.xMax, y));
                 painter.Stroke();
             }
 
             for (int j = 0; j < _dataSet[0].Count; ++j)
             {
-                var x = Mathf.Lerp(rect.xMin, rect.xMax, (float)j/(_dataSet[0].Count-1));
+                var x = Mathf.Lerp(rect.xMin, rect.xMax, (float)j / (_dataSet[0].Count - 1));
                 painter.BeginPath();
                 painter.MoveTo(new Vector2(x, rect.yMin));
-                painter.LineTo(new Vector2(x, rect.yMax+20));
+                painter.LineTo(new Vector2(x, rect.yMax + 20));
                 painter.Stroke();
             }
         }
@@ -218,7 +231,7 @@ namespace Leaframe.Controls.Charts
             {
                 if (div % i == 0) return i;
             }
-            
+
             return 10;
         }
 
