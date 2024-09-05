@@ -46,6 +46,10 @@
     transition: right 200ms ease-in-sine, left 200ms ease-out-sine 200ms;
 }
 
+.unity-toggle.checkbox {
+    
+}
+
 /************ SLIDERS ************/
 
 .unity-slider__input {

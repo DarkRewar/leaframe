@@ -1,0 +1,20 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Samples/Settings/SettingsPage.uss?fileID=7433441132597879392&amp;guid=b0e2940a34bde754ebf82b8297527607&amp;type=3#SettingsPage" />
+    <engine:TabView name="SettingsTabView" class="settings-tab-view">
+        <engine:Tab label="General" name="GeneralPage">
+            <engine:DropdownField label="Screen Size" name="DisplayDropdown" choices="1920 x 1080,1280 x 720" index="0" />
+            <engine:Toggle label="Fullscreen" name="FullScreenToggle" value="false" class="checkbox" />
+        </engine:Tab>
+        <engine:Tab label="Audio" name="AudioPage">
+            <engine:Slider label="Global Volume" value="42" high-value="100" name="GlobalVolume" fill="true" />
+            <engine:Slider label="Music Volume" value="42" high-value="100" name="MusicVolume" fill="true" />
+            <engine:Slider label="SFX Volume" value="42" high-value="100" name="SFXVolume" fill="true" />
+            <engine:Slider label="Voice Volume" value="42" high-value="100" name="VoiceVolume" fill="true" show-input-field="false" />
+        </engine:Tab>
+        <engine:Tab label="Render" name="RenderPage">
+            <engine:DropdownField label="Quality Preset" choices="Ultra,High,Medium,Low" index="0" name="QualityPresetDropdown" />
+            <engine:DropdownField label="Shadow Quality" choices="Ultra,High,Medium,Low" index="0" name="ShadowQualityDropdown" />
+            <engine:DropdownField label="Anti-aliasing" choices="x0,x1,x2,x4" index="3" name="AntialiasingDropdown" />
+        </engine:Tab>
+    </engine:TabView>
+</engine:UXML>
