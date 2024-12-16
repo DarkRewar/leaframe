@@ -48,6 +48,8 @@ namespace Leaframe.Controls.Charts
     {
         protected static readonly Color[] _availableColors = new[]
         {
+            new Color(17f/255, 29f/255, 111f/255),
+            new Color(1, 163f/255, 120f/255),
             new Color(46f/255, 204f/255, 113f/255),
             new Color(231f/255, 76f/255, 60f/255),
             new Color(52f/255, 152f/255, 219f/255),

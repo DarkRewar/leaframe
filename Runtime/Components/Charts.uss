@@ -1,9 +1,15 @@
+.chart {
+    --chart-border-color: transparent;
+    --chart-border-width: 0;
+}
+
 .chart-label {
     font-size: var(--small-font-size);
     -unity-text-align: middle-right;
     width: 75px;
 }
 
+/* AXES CHART */
 .axes-chart {
     padding-right: 20px;
     padding-top: 20px;
@@ -21,6 +27,7 @@
     width: auto;
 }
 
+/* BAR CHART */
 .bar-chart {
     padding-bottom: 25px;
 }
@@ -46,4 +53,10 @@
 
 .bar-chart-entry__value {
     color: white;
+}
+
+/* PIE CHART */
+.pie-chart {
+    --pie-chart-border-color: transparent;
+    --pie-chart-border-width: 0;
 }

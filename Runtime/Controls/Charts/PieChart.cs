@@ -27,9 +27,17 @@ namespace Leaframe.Controls.Charts
         #endregion
 
         private const string PieChartClassname = "pie-chart";
+        
+        private static CustomStyleProperty<Color> _borderColorProperty = new("--pie-chart-border-color");
+        private static CustomStyleProperty<int> _borderWidthProperty = new("--pie-chart-border-width");
+
+        private Color _borderColor;
+        private int _borderWidth;
 
         public PieChart()
         {
+            AddToClassList(PieChartClassname);
+            
             DataSet = new List<ChartDataSet>()
             {
                 new ChartDataSet(new()
@@ -42,17 +50,27 @@ namespace Leaframe.Controls.Charts
                     new(37, "Warning", new Color32(0xF2, 0x8F, 0x16,  255)),
                 })
             };
+            
+            RegisterCallback<CustomStyleResolvedEvent>(OnCustomStyleResolved);
 
             generateVisualContent += OnGenerateVisualContent;
+        }
+
+        private void OnCustomStyleResolved(CustomStyleResolvedEvent evt)
+        {
+            evt.customStyle.TryGetValue(_borderColorProperty, out _borderColor);
+            evt.customStyle.TryGetValue(_borderWidthProperty, out _borderWidth);
         }
 
         private void OnGenerateVisualContent(MeshGenerationContext context)
         {
             var painter = context.painter2D;
-            painter.strokeColor = Color.white;
+            painter.strokeColor = _borderColor;
+            painter.lineWidth = _borderWidth;
             painter.fillColor = Color.white;
 
-            float radius = Mathf.Min(contentRect.width, contentRect.height) / 2;
+            float padding = (float)_borderWidth / 2;
+            float radius = Mathf.Min(contentRect.width - _borderWidth, contentRect.height - _borderWidth) / 2;
 
             float angle = 0.0f;
             float anglePct = 0.0f;
@@ -64,9 +82,11 @@ namespace Leaframe.Controls.Charts
 
                 painter.fillColor = data.Color;
                 painter.BeginPath();
-                painter.MoveTo(new Vector2(radius, radius));
-                painter.Arc(new Vector2(radius, radius), radius, angle, anglePct);
+                painter.MoveTo(new Vector2(radius + padding, radius + padding));
+                painter.Arc(new Vector2(radius + padding, radius + padding), radius, angle, anglePct);
                 painter.Fill();
+                if(_borderWidth > 0)
+                    painter.Stroke();
 
                 angle = anglePct;
                 k++;
