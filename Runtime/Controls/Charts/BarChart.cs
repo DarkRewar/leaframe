@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UIElements;
 
-namespace Leaframe.Controls.Charts
+namespace Leaframe.Charts
 {
     public class BarChart : AxesChart
     {

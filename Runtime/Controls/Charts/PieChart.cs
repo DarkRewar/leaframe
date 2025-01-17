@@ -1,57 +1,53 @@
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Scripting;
 using UnityEngine.UIElements;
 
-namespace Leaframe.Controls.Charts
+namespace Leaframe.Charts
 {
-    public class PieChart : Chart
+    [UxmlElement]
+    public partial class PieChart : Chart
     {
-        #region TRAITS & FACTORY
-
-        [Preserve]
-        public new class UxmlFactory : UxmlFactory<PieChart, UxmlTraits>
-        {
-            public override string uxmlName => nameof(PieChart);
-
-            public override string uxmlNamespace => "Leaframe.Charts";
-        }
-
-        [Preserve]
-        public new class UxmlTraits : Chart.UxmlTraits
-        {
-
-        }
-
-        #endregion
-
         private const string PieChartClassname = "pie-chart";
-        
-        private static CustomStyleProperty<Color> _borderColorProperty = new("--pie-chart-border-color");
-        private static CustomStyleProperty<int> _borderWidthProperty = new("--pie-chart-border-width");
+
+        private static CustomStyleProperty<Color> _borderColorProperty =
+            new("--pie-chart-border-color");
+
+        private static CustomStyleProperty<int> _borderWidthProperty =
+            new("--pie-chart-border-width");
 
         private Color _borderColor;
         private int _borderWidth;
 
+        public float Radius => Mathf.Min(
+                                   contentRect.width - _borderWidth,
+                                   contentRect.height - _borderWidth)
+                               / 2;
+
+        public event Action<ChartData> OnChartDataHovered;
+
         public PieChart()
         {
             AddToClassList(PieChartClassname);
-            
+
             DataSet = new List<ChartDataSet>()
             {
-                new ChartDataSet(new()
-                {
-                    new(240, "Primary", new Color32(17, 29, 111, 255)),
-                    new(175, "Secondary", new Color32(0xFF, 0xA3, 0x78, 255)),
-                    new(123, "Success", new Color32(0x4B, 0xCC, 0x76, 255)),
-                    new(89, "Error", new Color32(0xCC, 0x3B, 0x37, 255)),
-                    new(70, "Info", new Color32(0x21, 0x96, 0xFF,  255)),
-                    new(37, "Warning", new Color32(0xF2, 0x8F, 0x16,  255)),
-                })
+                new ChartDataSet(
+                    new()
+                    {
+                        new(240, "Primary", new Color32(17, 29, 111, 255)),
+                        new(175, "Secondary", new Color32(0xFF, 0xA3, 0x78, 255)),
+                        new(123, "Success", new Color32(0x4B, 0xCC, 0x76, 255)),
+                        new(89, "Error", new Color32(0xCC, 0x3B, 0x37, 255)),
+                        new(70, "Info", new Color32(0x21, 0x96, 0xFF, 255)),
+                        new(37, "Warning", new Color32(0xF2, 0x8F, 0x16, 255)),
+                    })
             };
-            
+
             RegisterCallback<CustomStyleResolvedEvent>(OnCustomStyleResolved);
+            RegisterCallback<MouseMoveEvent>(OnMouseMove);
 
             generateVisualContent += OnGenerateVisualContent;
         }
@@ -66,15 +62,17 @@ namespace Leaframe.Controls.Charts
         {
             var painter = context.painter2D;
             painter.strokeColor = _borderColor;
+            painter.lineCap = LineCap.Round;
             painter.lineWidth = _borderWidth;
             painter.fillColor = Color.white;
 
-            float padding = (float)_borderWidth / 2;
-            float radius = Mathf.Min(contentRect.width - _borderWidth, contentRect.height - _borderWidth) / 2;
+            // float padding = (float)_borderWidth / 2;
+            float radius = Radius;
+            Vector2 center = contentRect.center;
 
+            // drawing pie parts fills first
             float angle = 0.0f;
             float anglePct = 0.0f;
-            int k = 0;
             double sum = DataSet[0].Sum(data => data.Value);
             foreach (var data in DataSet[0])
             {
@@ -82,20 +80,70 @@ namespace Leaframe.Controls.Charts
 
                 painter.fillColor = data.Color;
                 painter.BeginPath();
-                painter.MoveTo(new Vector2(radius + padding, radius + padding));
-                painter.Arc(new Vector2(radius + padding, radius + padding), radius, angle, anglePct);
+                painter.MoveTo(center);
+                painter.Arc(center, radius, angle, anglePct);
                 painter.Fill();
-                if(_borderWidth > 0)
-                    painter.Stroke();
+                painter.ClosePath();
 
                 angle = anglePct;
-                k++;
+            }
+
+            // then drawing borders to overlap the fill draw order
+            if (_borderWidth <= 0) return;
+
+            angle = 0.0f;
+            anglePct = 0.0f;
+            foreach (var data in DataSet[0])
+            {
+                anglePct += 360.0f * (float)(data.Value / sum);
+
+                painter.fillColor = data.Color;
+                painter.BeginPath();
+                painter.MoveTo(center);
+                painter.Arc(center, radius, angle, anglePct);
+                painter.Stroke();
+                painter.ClosePath();
+
+                angle = anglePct;
             }
         }
 
         protected override void OnDataSetChanged(List<ChartDataSet> dataSet)
         {
             //throw new System.NotImplementedException();
+        }
+
+        private void OnMouseMove(MouseMoveEvent evt)
+        {
+            float radius = Radius;
+            Vector2 center = contentRect.center;
+
+            if (Vector2.Distance(evt.localMousePosition, center) > radius)
+            {
+                OnChartDataHovered?.Invoke(null);
+                return;
+            }
+            
+            float angle = 0.0f;
+            float anglePct = 0.0f;
+            double sum = DataSet[0].Sum(data => data.Value);
+            foreach (var data in DataSet[0])
+            {
+                float dataAngle =  360.0f * (float)(data.Value / sum);
+                anglePct += dataAngle;
+
+                Vector2 mousePosition = Quaternion.Euler(0, 0, -angle) * (evt.localMousePosition - contentRect.center);
+                
+                float mouseAngle = -Vector2.SignedAngle(mousePosition, Vector2.right);
+                if(mouseAngle < 0) mouseAngle = 360 - mouseAngle * -1;
+                if (mouseAngle < dataAngle)
+                {
+                    OnChartDataHovered?.Invoke(data);
+                    return;
+                }
+
+                angle = anglePct;
+            }
         }
     }
 }
