@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Leaframe.Controls.Charts
+namespace Leaframe.Charts
 {
     public abstract class AxesChart : Chart
     {
