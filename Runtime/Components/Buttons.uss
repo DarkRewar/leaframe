@@ -53,7 +53,7 @@
 }
 
 .unity-button:hover {
-    cursor: link;
+    /*cursor: link;*/
     /*box-shadow: inset 0px 0px 100px 0px rgba(0, 0, 0, 0.1);*/
     /*text-decoration: none;*/
 }
