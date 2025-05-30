@@ -48,6 +48,7 @@ namespace Leaframe.Charts
 
             RegisterCallback<CustomStyleResolvedEvent>(OnCustomStyleResolved);
             RegisterCallback<MouseMoveEvent>(OnMouseMove);
+            RegisterCallback<MouseOutEvent>(OnMouseExit);
 
             generateVisualContent += OnGenerateVisualContent;
         }
@@ -144,6 +145,11 @@ namespace Leaframe.Charts
 
                 angle = anglePct;
             }
+        }
+
+        private void OnMouseExit(MouseOutEvent evt)
+        {
+            OnChartDataHovered?.Invoke(null);
         }
     }
 }
