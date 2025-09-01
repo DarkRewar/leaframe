@@ -36,7 +36,11 @@ namespace Leaframe.Charts
             _chartData.AddRange(chartDataList);
         }
 
-        public ChartData this[int index] { get => _chartData[index]; set => _chartData[index] = value; }
+        public ChartData this[int index]
+        {
+            get => _chartData[index];
+            set => _chartData[index] = value;
+        }
 
         internal Color GetColor(ChartData entry)
         {
@@ -63,16 +67,21 @@ namespace Leaframe.Charts
 
         public int Count => _chartData.Count;
         public bool IsReadOnly => false;
-        
+
         public event EventHandler<BindablePropertyChangedEventArgs> propertyChanged;
     }
 
     [UxmlObject]
     public partial class ChartData
     {
-        [UxmlAttribute] public double Value;
-        [UxmlAttribute] public string Id;
-        [UxmlAttribute] public Color Color;
+        [UxmlAttribute]
+        public double Value;
+
+        [UxmlAttribute]
+        public string Id;
+
+        [UxmlAttribute]
+        public Color Color;
 
         public ChartData() { }
 
@@ -91,7 +100,8 @@ namespace Leaframe.Charts
     {
         protected static readonly Color[] _availableColors = new[]
         {
-            new Color(17f / 255, 29f / 255, 111f / 255), new Color(1, 163f / 255, 120f / 255),
+            new Color(17f / 255, 29f / 255, 111f / 255),
+            new Color(1, 163f / 255, 120f / 255),
             new Color(46f / 255, 204f / 255, 113f / 255),
             new Color(231f / 255, 76f / 255, 60f / 255),
             new Color(52f / 255, 152f / 255, 219f / 255),
@@ -128,10 +138,11 @@ namespace Leaframe.Charts
                 _dataSet = value;
                 if (Labels == default & _dataSet.Count > 0)
                     Labels = _dataSet[0].Select(data => data.Id).ToList();
+                MarkDirtyRepaint();
                 OnDataSetChanged(_dataSet);
             }
         }
-        
+
         [UxmlAttribute]
         public List<string> Labels = default;
 
