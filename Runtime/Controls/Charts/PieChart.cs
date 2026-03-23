@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Leaframe.Charts
 {
-    [UxmlElement]
+    [UxmlElement(libraryPath = "Leaframe/Charts")]
     public partial class PieChart : Chart
     {
         private const string PieChartClassname = "pie-chart";
@@ -21,8 +20,7 @@ namespace Leaframe.Charts
         private Color _borderColor;
         private int _borderWidth;
 
-        public float Radius => Mathf.Min(
-                                   contentRect.width - _borderWidth,
+        public float Radius => Mathf.Min(contentRect.width - _borderWidth,
                                    contentRect.height - _borderWidth)
                                / 2;
 
@@ -34,16 +32,15 @@ namespace Leaframe.Charts
 
             DataSet = new List<ChartDataSet>()
             {
-                new ChartDataSet(
-                    new()
-                    {
-                        new(240, "Primary", new Color32(17, 29, 111, 255)),
-                        new(175, "Secondary", new Color32(0xFF, 0xA3, 0x78, 255)),
-                        new(123, "Success", new Color32(0x4B, 0xCC, 0x76, 255)),
-                        new(89, "Error", new Color32(0xCC, 0x3B, 0x37, 255)),
-                        new(70, "Info", new Color32(0x21, 0x96, 0xFF, 255)),
-                        new(37, "Warning", new Color32(0xF2, 0x8F, 0x16, 255)),
-                    })
+                new ChartDataSet(new()
+                {
+                    new(240, "Primary", new Color32(17, 29, 111, 255)),
+                    new(175, "Secondary", new Color32(0xFF, 0xA3, 0x78, 255)),
+                    new(123, "Success", new Color32(0x4B, 0xCC, 0x76, 255)),
+                    new(89, "Error", new Color32(0xCC, 0x3B, 0x37, 255)),
+                    new(70, "Info", new Color32(0x21, 0x96, 0xFF, 255)),
+                    new(37, "Warning", new Color32(0xF2, 0x8F, 0x16, 255)),
+                })
             };
 
             RegisterCallback<CustomStyleResolvedEvent>(OnCustomStyleResolved);
@@ -77,7 +74,7 @@ namespace Leaframe.Charts
             double sum = DataSet[0].Sum(data => data.Value);
             foreach (var data in DataSet[0])
             {
-                anglePct += 360.0f * (float)(data.Value / sum);
+                anglePct += 360.0f * (float) (data.Value / sum);
 
                 painter.fillColor = data.Color;
                 painter.BeginPath();
@@ -96,7 +93,7 @@ namespace Leaframe.Charts
             anglePct = 0.0f;
             foreach (var data in DataSet[0])
             {
-                anglePct += 360.0f * (float)(data.Value / sum);
+                anglePct += 360.0f * (float) (data.Value / sum);
 
                 painter.fillColor = data.Color;
                 painter.BeginPath();
@@ -124,19 +121,19 @@ namespace Leaframe.Charts
                 OnChartDataHovered?.Invoke(null);
                 return;
             }
-            
+
             float angle = 0.0f;
             float anglePct = 0.0f;
             double sum = DataSet[0].Sum(data => data.Value);
             foreach (var data in DataSet[0])
             {
-                float dataAngle =  360.0f * (float)(data.Value / sum);
+                float dataAngle = 360.0f * (float) (data.Value / sum);
                 anglePct += dataAngle;
 
                 Vector2 mousePosition = Quaternion.Euler(0, 0, -angle) * (evt.localMousePosition - contentRect.center);
-                
+
                 float mouseAngle = -Vector2.SignedAngle(mousePosition, Vector2.right);
-                if(mouseAngle < 0) mouseAngle = 360 - mouseAngle * -1;
+                if (mouseAngle < 0) mouseAngle = 360 - mouseAngle * -1;
                 if (mouseAngle < dataAngle)
                 {
                     OnChartDataHovered?.Invoke(data);

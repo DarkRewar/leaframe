@@ -5,31 +5,9 @@ using UnityEngine.UIElements;
 
 namespace Leaframe.Charts
 {
-    public class BarChart : AxesChart
+    [UxmlElement(libraryPath = "Leaframe/Charts")]
+    public partial class BarChart : AxesChart
     {
-        #region TRAITS & FACTORY
-
-        [Preserve]
-        public new class UxmlFactory : UxmlFactory<BarChart, UxmlTraits>
-        {
-            public override string uxmlName => nameof(BarChart);
-
-            public override string uxmlNamespace => "Leaframe.Charts";
-        }
-
-        [Preserve]
-        public new class UxmlTraits : AxesChart.UxmlTraits
-        {
-
-            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-            {
-                base.Init(ve, bag, cc);
-                if (ve is not BarChart barChart) return;
-            }
-        }
-
-        #endregion
-
         protected VisualElement _barsContainer;
 
         private const string BarChartClassname = "bar-chart";
@@ -83,7 +61,7 @@ namespace Leaframe.Charts
             {
                 var dataElement = new VisualElement();
                 dataElement.AddToClassList(BarChartEntryClassname);
-                dataElement.style.height = new StyleLength(Mathf.Lerp(0, ChartRect.height, (float)(entry.Value / max)));
+                dataElement.style.height = new StyleLength(Mathf.Lerp(0, ChartRect.height, (float) (entry.Value / max)));
                 dataElement.style.backgroundColor = DataSet[0].GetColor(entry);
                 _barsContainer.Add(dataElement);
 

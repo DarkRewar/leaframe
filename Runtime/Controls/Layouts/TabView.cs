@@ -5,40 +5,12 @@ using UnityEngine.UIElements;
 
 namespace Leaframe.Controls.Layouts
 {
-    public class TabView : VisualElement
+    [UxmlElement(libraryPath = "Leaframe/Layouts")]
+    public partial class TabView : VisualElement
     {
-        #region TRAITS & FACTORY
-
-        [Preserve]
-        public new class UxmlFactory : UxmlFactory<TabView, UxmlTraits>
-        {
-            public override string uxmlName => nameof(TabView);
-
-            public override string uxmlNamespace => "Leaframe.Layouts";
-        }
-
-        [Preserve]
-        public new class UxmlTraits : VisualElement.UxmlTraits
-        {
-            private readonly UxmlBoolAttributeDescription _animated = new()
-            {
-                name = "animated",
-                defaultValue = true
-            };
-
-            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-            {
-                base.Init(ve, bag, cc);
-                if (ve is not TabView tabView) return;
-
-                tabView.Animated = _animated.GetValueFromBag(bag, cc);
-            }
-        }
-        
-        #endregion
-
         private bool _animated = true;
 
+        [UxmlAttribute]
         public bool Animated
         {
             get => _animated;
@@ -77,7 +49,7 @@ namespace Leaframe.Controls.Layouts
         public TabView()
         {
             AddToClassList(TabViewClassname);
-            
+
             _tabContainer = new VisualElement();
             _tabContainer.AddToClassList(TabContainerClassname);
             hierarchy.Add(_tabContainer);
@@ -85,7 +57,7 @@ namespace Leaframe.Controls.Layouts
             _tabSection = new VisualElement();
             _tabSection.AddToClassList(TabSectionClassname);
             hierarchy.Add(_tabSection);
-            
+
             RebuildTabs();
             RegisterCallback<AttachToPanelEvent>(_ => RebuildTabs());
             RegisterCallback<DetachFromPanelEvent>(_ => RebuildTabs());
@@ -94,26 +66,23 @@ namespace Leaframe.Controls.Layouts
         public void RebuildTabs()
         {
             _tabContainer.Clear();
-            
+
             for (int i = 0; i < _tabSection.childCount; ++i)
             {
                 var child = _tabSection[i];
                 child.AddToClassList(TabContentClassname);
-                if(i == 0) child.AddToClassList(ActiveClassname);
+                if (i == 0) child.AddToClassList(ActiveClassname);
                 else child.AddToClassList(ExitRightClassname);
-                
-                string childName = string.IsNullOrEmpty(child.name) 
-                    ? $"Header{i + 1}" 
+
+                string childName = string.IsNullOrEmpty(child.name)
+                    ? $"Header{i + 1}"
                     : child.name;
 
-                Label tabButton = new()
-                {
-                    name = $"{childName}NavButton"
-                };
+                Label tabButton = new() { name = $"{childName}NavButton" };
                 tabButton.text = childName;
                 tabButton.RegisterCallback<ClickEvent, int>(OnTabClicked, i);
                 tabButton.AddToClassList(TabButtonClassname);
-                if(i == 0) tabButton.AddToClassList(ActiveClassname);
+                if (i == 0) tabButton.AddToClassList(ActiveClassname);
                 _tabContainer.Add(tabButton);
             }
 
@@ -129,10 +98,10 @@ namespace Leaframe.Controls.Layouts
 
             _tabSection[_currentIndex].RemoveFromClassList(ActiveClassname);
             _tabContainer[_currentIndex].RemoveFromClassList(ActiveClassname);
-            
+
             _tabSection[index].AddToClassList(ActiveClassname);
             _tabContainer[index].AddToClassList(ActiveClassname);
-            
+
             _currentIndex = index;
         }
 
@@ -152,7 +121,7 @@ namespace Leaframe.Controls.Layouts
                     _tabSection[i].AddToClassList(ExitRightClassname);
                 }
             }
-            
+
             _tabSection[_currentIndex].AddToClassList(exit);
             _tabSection[newIndex].RemoveFromClassList(ExitLeftClassname);
             _tabSection[newIndex].RemoveFromClassList(ExitRightClassname);
@@ -160,9 +129,9 @@ namespace Leaframe.Controls.Layouts
 
         private void ApplyAnimationClasses()
         {
-            foreach(var child in _tabSection.Children())
+            foreach (var child in _tabSection.Children())
             {
-                if(_animated) child.AddToClassList(TabContentAnimatedClassname);
+                if (_animated) child.AddToClassList(TabContentAnimatedClassname);
                 else child.RemoveFromClassList(TabContentAnimatedClassname);
             }
         }

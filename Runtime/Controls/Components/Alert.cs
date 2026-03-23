@@ -9,36 +9,9 @@ using Debug = UnityEngine.Debug;
 
 namespace Leaframe.Controls.Components
 {
-    public class Alert : TextElement
+    [UxmlElement(libraryPath = "Leaframe/Components")]
+    public partial class Alert : TextElement
     {
-        #region FACTORY & TRAITS
-
-        public new class UxmlFactory : UxmlFactory<Alert, UxmlTraits>
-        {
-            public override string uxmlName => nameof(Alert);
-
-            public override string uxmlNamespace => "Leaframe.Components";
-        }
-
-        public new class UxmlTraits : TextElement.UxmlTraits
-        {
-            protected readonly UxmlEnumAttributeDescription<AlertType> _type = new()
-            {
-                name = "type",
-                defaultValue = AlertType.Info
-            };
-
-            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-            {
-                base.Init(ve, bag, cc);
-                if (ve is not Alert alert) return;
-
-                alert.Type = _type.GetValueFromBag(bag, cc);
-            }
-        }
-
-        #endregion
-
         public enum AlertType
         {
             Success,
@@ -49,6 +22,7 @@ namespace Leaframe.Controls.Components
 
         private AlertType _type;
 
+        [UxmlAttribute]
         public AlertType Type
         {
             get => _type;
@@ -65,7 +39,7 @@ namespace Leaframe.Controls.Components
         public const string AlertClassname = "alert";
         public const string AlertCloseClassname = "alert-close";
 
-        public Alert() : this(AlertType.Info){}
+        public Alert() : this(AlertType.Info) { }
 
         public Alert(AlertType alertType)
         {
@@ -77,7 +51,7 @@ namespace Leaframe.Controls.Components
             var closeButton = new Button(OnCloseClicked);
             closeButton.AddToClassList(AlertCloseClassname);
             //Add(closeButton);
-            
+
             this.AddManipulator(new SwipeGestureManipulator());
             RegisterCallback<SwipeEvent>(OnSwiped);
         }
@@ -104,16 +78,16 @@ namespace Leaframe.Controls.Components
             UIDocument document = GameObject.FindAnyObjectByType<UIDocument>();
             if (document)
                 return Create(type, label, onClicked, document.rootVisualElement);
-            
+
             Debug.LogWarning("No UIDocument found to place the Alert in.");
-                
+
             return new Alert(type, label, onClicked);
         }
 
         private static Alert Create(AlertType type, string label, Action onClicked, [NotNull] VisualElement container)
         {
             Alert alert = new(type, label, onClicked);
-            if (container == null) 
+            if (container == null)
                 throw new NullReferenceException($"[Leaframe] Container can't be null for {nameof(Alert)}.");
             container.Add(alert);
             return alert;
@@ -124,13 +98,16 @@ namespace Leaframe.Controls.Components
         public static Alert Info(string label, Action onClicked) => Create(AlertType.Info, label, onClicked);
         public static Alert Warning(string label, Action onClicked) => Create(AlertType.Warning, label, onClicked);
 
-        public static Alert Success(string label, Action onClicked, [NotNull] VisualElement container) => 
+        public static Alert Success(string label, Action onClicked, [NotNull] VisualElement container) =>
             Create(AlertType.Success, label, onClicked);
-        public static Alert Error(string label, Action onClicked, [NotNull] VisualElement container) => 
+
+        public static Alert Error(string label, Action onClicked, [NotNull] VisualElement container) =>
             Create(AlertType.Error, label, onClicked);
-        public static Alert Info(string label, Action onClicked, [NotNull] VisualElement container) => 
+
+        public static Alert Info(string label, Action onClicked, [NotNull] VisualElement container) =>
             Create(AlertType.Info, label, onClicked);
-        public static Alert Warning(string label, Action onClicked, [NotNull] VisualElement container) => 
+
+        public static Alert Warning(string label, Action onClicked, [NotNull] VisualElement container) =>
             Create(AlertType.Warning, label, onClicked);
     }
 }

@@ -6,44 +6,9 @@ using UnityEngine.UIElements;
 
 namespace Leaframe.Charts
 {
-    public class LineChart : AxesChart
+    [UxmlElement(libraryPath = "Leaframe/Charts")]
+    public partial class LineChart : AxesChart
     {
-        #region TRAITS & FACTORY
-
-        [Preserve]
-        public new class UxmlFactory : UxmlFactory<LineChart, UxmlTraits>
-        {
-            public override string uxmlName => nameof(LineChart);
-
-            public override string uxmlNamespace => "Leaframe.Charts";
-        }
-
-        [Preserve]
-        public new class UxmlTraits : AxesChart.UxmlTraits
-        {
-            private readonly UxmlBoolAttributeDescription _displayDots = new()
-            {
-                name = "display-dots",
-                defaultValue = true
-            };
-
-            private readonly UxmlEnumAttributeDescription<SteppedLineType> _steppedLine = new()
-            {
-                name = "stepped-line"
-            };
-
-            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-            {
-                base.Init(ve, bag, cc);
-                if (ve is not LineChart lineChart) return;
-
-                lineChart.DisplayDots = _displayDots.GetValueFromBag(bag, cc);
-                lineChart.SteppedLine = _steppedLine.GetValueFromBag(bag, cc);
-            }
-        }
-
-        #endregion
-
         public enum SteppedLineType
         {
             No,
@@ -53,7 +18,10 @@ namespace Leaframe.Charts
             Curve
         }
 
+        [UxmlAttribute]
         public bool DisplayDots { get; private set; } = true;
+
+        [UxmlAttribute]
         public SteppedLineType SteppedLine { get; private set; }
 
         private const string LineChartClassname = "line-chart";
@@ -87,7 +55,7 @@ namespace Leaframe.Charts
                     new(105, "July"),
                 })
             };
-            
+
             generateVisualContent += OnGenerateVisualContent;
         }
 
@@ -100,39 +68,38 @@ namespace Leaframe.Charts
         private void DrawLines(Painter2D painter)
         {
             var rect = this.ChartRect;
-            
+
             (int minStep, int maxStep) = ComputeMinMaxSteps();
 
             Vector2 GetPoint(int i, ChartDataSet dataSet)
             {
                 var y = (dataSet[i].Value + Math.Abs(minStep)) / (maxStep + Math.Abs(minStep));
-                return new Vector2(
-                    Mathf.Lerp(rect.xMin, rect.xMax, ((float)i) / (dataSet.Count - 1)),
-                    Mathf.Lerp(rect.yMax, rect.yMin, (float)y));
+                return new Vector2(Mathf.Lerp(rect.xMin, rect.xMax, ((float) i) / (dataSet.Count - 1)),
+                    Mathf.Lerp(rect.yMax, rect.yMin, (float) y));
             }
-            
+
             foreach (var dataSet in DataSet)
             {
                 painter.strokeColor = dataSet.Color;
                 painter.fillColor = dataSet.Color;
                 painter.lineCap = LineCap.Round;
                 painter.lineWidth = 5;
-                
+
                 // var minValue = dataSet.Min(x => x.Value);
                 // var maxValue = dataSet.Max(x => x.Value);
                 var previousPoint = GetPoint(0, dataSet);
                 var point = previousPoint;
-                
+
                 painter.BeginPath();
                 painter.MoveTo(point);
-                
+
                 for (int i = 1; i < dataSet.Count; i++)
                 {
                     previousPoint = point;
                     point = GetPoint(i, dataSet);
-                    
+
                     switch (SteppedLine)
-                    { 
+                    {
                         case SteppedLineType.After:
                             painter.LineTo(new Vector2(previousPoint.x, point.y));
                             painter.LineTo(point);
@@ -148,14 +115,14 @@ namespace Leaframe.Charts
                             painter.LineTo(point);
                             break;
                         case SteppedLineType.Curve:
-                            var subPrevious = GetPoint(i - 2 < 0 ? i - 1 : i-2, dataSet);
+                            var subPrevious = GetPoint(i - 2 < 0 ? i - 1 : i - 2, dataSet);
                             var previous = previousPoint;
                             var current = point;
                             var next = GetPoint(i == dataSet.Count - 1 ? i : i + 1, dataSet);
 
                             var controlPoints1 = GetControlPoints(subPrevious, previous, current);
                             var controlPoints2 = GetControlPoints(previousPoint, current, next);
-                            
+
                             painter.BezierCurveTo(controlPoints1.p2, controlPoints2.p1, point);
                             break;
                         default:
@@ -163,12 +130,13 @@ namespace Leaframe.Charts
                             break;
                     }
                 }
+
                 painter.Stroke();
 
                 if (DisplayDots)
                 {
                     int dotRadius = 20;
-                    
+
                     for (int i = 0; i < dataSet.Count; i++)
                     {
                         var valuePoint = GetPoint(i, dataSet);
@@ -193,21 +161,18 @@ namespace Leaframe.Charts
         /// <returns></returns>
         private (Vector2 p1, Vector2 p2) GetControlPoints(Vector2 previous, Vector2 current, Vector2 next, float tension = 0.4f)
         {
-            var d01=Math.Sqrt(Math.Pow(current.x-previous.x,2)+Math.Pow(current.y-next.y,2));
-            var d12=Math.Sqrt(Math.Pow(next.x-current.x,2)+Math.Pow(next.y-current.y,2));
-            var fa=tension * d01/(d01+d12);   // scaling factor for triangle Ta
-            var fb=tension * d12/(d01+d12);   // ditto for Tb, simplifies to fb=t-fa
-            var p1x = (float)(current.x-fa*(next.x-previous.x));    // x2-x0 is the width of triangle T
-            var p1y = (float)(current.y-fa*(next.y-previous.y));    // y2-y0 is the height of T
-            var p2x = (float)(current.x+fb*(next.x-previous.x));
-            var p2y = (float)(current.y+fb*(next.y-previous.y));  
-            return (new(p1x,p1y), new(p2x,p2y));
+            var d01 = Math.Sqrt(Math.Pow(current.x - previous.x, 2) + Math.Pow(current.y - next.y, 2));
+            var d12 = Math.Sqrt(Math.Pow(next.x - current.x, 2) + Math.Pow(next.y - current.y, 2));
+            var fa = tension * d01 / (d01 + d12); // scaling factor for triangle Ta
+            var fb = tension * d12 / (d01 + d12); // ditto for Tb, simplifies to fb=t-fa
+            var p1x = (float) (current.x - fa * (next.x - previous.x)); // x2-x0 is the width of triangle T
+            var p1y = (float) (current.y - fa * (next.y - previous.y)); // y2-y0 is the height of T
+            var p2x = (float) (current.x + fb * (next.x - previous.x));
+            var p2y = (float) (current.y + fb * (next.y - previous.y));
+            return (new(p1x, p1y), new(p2x, p2y));
         }
 
-        protected override void OnDataSetChanged(List<ChartDataSet> dataSet)
-        {
-            
-        }
+        protected override void OnDataSetChanged(List<ChartDataSet> dataSet) { }
 
         protected override void OnCursorPositionChanged(Vector2 cursorPosition)
         {
