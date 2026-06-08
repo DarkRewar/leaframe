@@ -17,8 +17,12 @@ namespace Leaframe.Charts
         private static CustomStyleProperty<int> _borderWidthProperty =
             new("--pie-chart-border-width");
 
+        private static CustomStyleProperty<int> _borderInnerWidthProperty =
+            new("--pie-chart-inner-border-width");
+
         private Color _borderColor;
         private int _borderWidth;
+        private int _borderInnerWidth;
 
         public float Radius => Mathf.Min(contentRect.width - _borderWidth,
                                    contentRect.height - _borderWidth)
@@ -54,6 +58,7 @@ namespace Leaframe.Charts
         {
             evt.customStyle.TryGetValue(_borderColorProperty, out _borderColor);
             evt.customStyle.TryGetValue(_borderWidthProperty, out _borderWidth);
+            evt.customStyle.TryGetValue(_borderInnerWidthProperty, out _borderInnerWidth);
         }
 
         private void OnGenerateVisualContent(MeshGenerationContext context)
@@ -61,7 +66,6 @@ namespace Leaframe.Charts
             var painter = context.painter2D;
             painter.strokeColor = _borderColor;
             painter.lineCap = LineCap.Round;
-            painter.lineWidth = _borderWidth;
             painter.fillColor = Color.white;
 
             // float padding = (float)_borderWidth / 2;
@@ -86,24 +90,34 @@ namespace Leaframe.Charts
                 angle = anglePct;
             }
 
-            // then drawing borders to overlap the fill draw order
-            if (_borderWidth <= 0) return;
-
-            angle = 0.0f;
-            anglePct = 0.0f;
-            foreach (var data in DataSet[0])
+            if (_borderInnerWidth >= 0)
             {
-                anglePct += 360.0f * (float) (data.Value / sum);
+                painter.lineWidth = _borderInnerWidth;
+                angle = 0.0f;
+                anglePct = 0.0f;
+                foreach (var data in DataSet[0])
+                {
+                    anglePct += 360.0f * (float) (data.Value / sum);
 
-                painter.fillColor = data.Color;
-                painter.BeginPath();
-                painter.MoveTo(center);
-                painter.Arc(center, radius, angle, anglePct);
-                painter.Stroke();
-                painter.ClosePath();
+                    painter.fillColor = data.Color;
+                    painter.BeginPath();
+                    painter.MoveTo(center);
+                    painter.Arc(center, radius, angle, anglePct);
+                    painter.Stroke();
+                    painter.ClosePath();
 
-                angle = anglePct;
+                    angle = anglePct;
+                }
             }
+
+            if (_borderWidth < 0) return;
+
+            painter.lineWidth = _borderWidth;
+            painter.BeginPath();
+            painter.MoveTo(center + Vector2.right * radius);
+            painter.Arc(center, radius, 0, 360);
+            painter.Stroke();
+            painter.ClosePath();
         }
 
         protected override void OnDataSetChanged(List<ChartDataSet> dataSet)
