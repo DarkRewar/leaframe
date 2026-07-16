@@ -21,11 +21,6 @@
   },
   "samples": [
     {
-      "displayName": "Login",
-      "description": "Contains sample for a login and register screen, using UITK and Leaframe.",
-      "path": "Samples~/Login"
-    },
-    {
       "displayName": "Settings",
       "description": "Contains sample for a settings screen, using UITK and Leaframe.",
       "path": "Samples~/Settings"
