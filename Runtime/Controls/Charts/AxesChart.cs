@@ -69,7 +69,10 @@ namespace Leaframe.Charts
 
             generateVisualContent += OnGenerateVisualContent;
             RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
+            RegisterCallback<AttachToPanelEvent>(OnAttachedToPanel);
         }
+
+        private void OnAttachedToPanel(AttachToPanelEvent evt) => RefreshLabels();
 
         private void OnGeometryChanged(GeometryChangedEvent _) => RefreshLabels();
 
@@ -114,8 +117,8 @@ namespace Leaframe.Charts
                 label.AddToClassList(HorizontalChartLabelClassname);
                 _labelsContainer.Add(label);
                 label.style.position = Position.Absolute;
-                label.style.left = x;
                 label.style.top = rect.yMax + 25;
+                label.style.left = x;
 
                 label.schedule.Execute(_ =>
                 {
@@ -126,13 +129,16 @@ namespace Leaframe.Charts
                         label.style.left = x - label.contentRect.width;
                     else
                         label.style.left = x - label.contentRect.width / 2;
+
+                    // label.style.transformOrigin = new TransformOrigin(new Length(100, LengthUnit.Percent), new Length(50, LengthUnit.Percent));
+                    // label.style.rotate = new Rotate(-45);
                 });
             }
         }
 
         protected (double minValue, double maxValue) ComputeMinMax()
         {
-            return _dataSet == null
+            return _dataSet == null || _dataSet.Count == 0
                 ? (0, 0)
                 : (_dataSet.Min(set => set.Min(data => data.Value)),
                     _dataSet.Max(set => set.Max(data => data.Value)));

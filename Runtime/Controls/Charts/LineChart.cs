@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Scripting;
 using UnityEngine.UIElements;
 
 namespace Leaframe.Charts
