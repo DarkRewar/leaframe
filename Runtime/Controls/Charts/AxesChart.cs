@@ -51,6 +51,15 @@ namespace Leaframe.Charts
 
         protected VisualElement _labelsContainer;
 
+        protected Color _axeLineColor = Color.black;
+        protected Color _stepLineColor = new Color(0, 0, 0, 0.2f);
+
+        protected static readonly CustomStyleProperty<Color> _axeLineColorProperty =
+            new("--axe-line-color");
+
+        protected static readonly CustomStyleProperty<Color> _stepLineColorProperty =
+            new("--step-line-color");
+
         protected const string AxesChartClassname = "axes-chart";
         protected const string AxesChartLabelsContainerClassname = "axes-chart__labels-container";
         protected const string ChartLabelClassname = "chart-label";
@@ -68,8 +77,16 @@ namespace Leaframe.Charts
             Add(_labelsContainer);
 
             generateVisualContent += OnGenerateVisualContent;
+            RegisterCallback<CustomStyleResolvedEvent>(OnCustomStyleResolved);
             RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
             RegisterCallback<AttachToPanelEvent>(OnAttachedToPanel);
+        }
+
+        private void OnCustomStyleResolved(CustomStyleResolvedEvent evt)
+        {
+            evt.customStyle.TryGetValue(_axeLineColorProperty, out _axeLineColor);
+            evt.customStyle.TryGetValue(_stepLineColorProperty, out _stepLineColor);
+            MarkDirtyRepaint();
         }
 
         private void OnAttachedToPanel(AttachToPanelEvent evt) => RefreshLabels();
@@ -167,7 +184,7 @@ namespace Leaframe.Charts
 
         private void DrawAxes(Painter2D painter)
         {
-            painter.strokeColor = Color.black;
+            painter.strokeColor = _axeLineColor;
             painter.lineWidth = AxeLineWidth;
             var rect = ChartRect;
             painter.BeginPath();
@@ -182,7 +199,7 @@ namespace Leaframe.Charts
             var rect = ChartRect;
 
             painter.lineWidth = StepLineWidth;
-            painter.strokeColor = new Color(0, 0, 0, 0.2f);
+            painter.strokeColor = _stepLineColor;
 
             int numberOfSteps = DetermineNumberOfSteps();
             for (int i = 0; i <= numberOfSteps; ++i)

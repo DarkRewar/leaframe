@@ -15,10 +15,13 @@
 .axes-chart {
     padding-right: 20px;
     padding-top: 20px;
+
+    --axe-line-color: #000;
+    --step-line-color: rgba(0, 0, 0, 0.2);
 }
 
-.axes-chart__labels-container{
-    position:absolute;
+.axes-chart__labels-container {
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
