@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Scripting;
@@ -41,6 +42,7 @@ namespace Leaframe.Charts
             };
 
             RegisterCallback<GeometryChangedEvent>(_ => DrawBars());
+            RegisterCallback<AttachToPanelEvent>(_ => DrawBars());
             DrawBars();
 
             //generateVisualContent += OnGenerateVisualContent;
@@ -52,16 +54,26 @@ namespace Leaframe.Charts
             _barsContainer.style.width = ChartRect.width;
             //_barsContainer.style.height = ChartRect.height - 30;
             _barsContainer.style.marginLeft = ChartRect.x;
-            _barsContainer.style.paddingBottom = contentRect.height - ChartRect.height + AxeLineWidth / 2;
+
+            var barContentHeight = ChartRect.height;
+            var barContentPaddingBottom = ChartRect.height - barContentHeight;
+            _barsContainer.style.paddingBottom = barContentPaddingBottom;
+            // _barsContainer.style.paddingBottom = contentRect.height - ChartRect.height + AxeLineWidth / 2;
 
             _barsContainer.Clear();
-            (var min, var max) = ComputeMinMaxSteps();
+            (var min, var max) = ComputeMinMax();
+            var minMaxDelta = Mathf.Abs((float) min) + Mathf.Abs((float) max);
+            float zeroHeight = min < 0 ? ChartRect.height * Mathf.Abs((float) min) / minMaxDelta : 0;
 
             foreach (var entry in DataSet[0])
             {
                 var dataElement = new VisualElement();
                 dataElement.AddToClassList(BarChartEntryClassname);
-                dataElement.style.height = new StyleLength(Mathf.Lerp(0, ChartRect.height, (float) (entry.Value / max)));
+
+                float heightRatio = Mathf.Abs((float) entry.Value) / minMaxDelta;
+                dataElement.style.height = new StyleLength(Mathf.Lerp(0, barContentHeight, heightRatio));
+                // dataElement.style.marginBottom = new Length(zeroHeight, LengthUnit.Percent);
+                dataElement.style.marginBottom = zeroHeight;
                 dataElement.style.backgroundColor = DataSet[0].GetColor(entry);
                 _barsContainer.Add(dataElement);
 

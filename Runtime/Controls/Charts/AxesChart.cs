@@ -18,8 +18,8 @@ namespace Leaframe.Charts
             protected set
             {
                 _displayHorizontalLabels = value;
-                MarkDirtyRepaint();
                 RefreshLabels();
+                MarkDirtyRepaint();
             }
         }
 
@@ -32,8 +32,8 @@ namespace Leaframe.Charts
             protected set
             {
                 _displayVerticalLabels = value;
-                MarkDirtyRepaint();
                 RefreshLabels();
+                MarkDirtyRepaint();
             }
         }
 
@@ -44,7 +44,7 @@ namespace Leaframe.Charts
                 var content = contentRect;
                 content.x += (DisplayVerticalLabels ? 100 : 25);
                 content.width -= (DisplayVerticalLabels ? 100 : 25);
-                content.height -= (DisplayHorizontalLabels ? 75 : 25);
+                content.height -= (DisplayHorizontalLabels ? 50 : 25);
                 return content;
             }
         }
@@ -108,8 +108,7 @@ namespace Leaframe.Charts
 
             (int minStep, int maxStep) = ComputeMinMaxSteps();
             int numberOfSteps = DetermineNumberOfSteps();
-            int i = 0;
-            for (; i <= numberOfSteps; ++i)
+            for (int i = 0; i <= numberOfSteps; ++i)
             {
                 var y = Mathf.Lerp(rect.yMax, rect.yMin, (float) i / numberOfSteps);
                 var label = new Label($"{Mathf.Lerp(minStep, maxStep, (float) i / numberOfSteps):###,###,##0}");
@@ -186,11 +185,20 @@ namespace Leaframe.Charts
         {
             painter.strokeColor = _axeLineColor;
             painter.lineWidth = AxeLineWidth;
+            var (min, max) = ComputeMinMax();
+            var delta = Mathf.Abs((float) min) + Mathf.Abs((float) max);
             var rect = ChartRect;
+
             painter.BeginPath();
+            // Draw vertical
             painter.MoveTo(new Vector2(rect.xMin, rect.yMin));
             painter.LineTo(new Vector2(rect.xMin, rect.yMax));
-            painter.LineTo(new Vector2(rect.xMax, rect.yMax));
+
+            // Draw horizontal
+            float zeroHeight = min < 0 ? rect.height * Mathf.Abs((float) min) / delta : 0;
+            zeroHeight = rect.yMax - zeroHeight;
+            painter.MoveTo(new Vector2(rect.xMin, zeroHeight));
+            painter.LineTo(new Vector2(rect.xMax, zeroHeight));
             painter.Stroke();
         }
 
