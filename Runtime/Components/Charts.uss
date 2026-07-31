@@ -18,6 +18,7 @@
 
     --axe-line-color: #000;
     --step-line-color: rgba(0, 0, 0, 0.2);
+    --vertical-label-size: 100;
 }
 
 .axes-chart__labels-container {
@@ -44,8 +45,13 @@
     justify-content: space-evenly;
 }
 
-.bar-chart-entry {
+.bar-chart-column {
     width: 100px;
+    flex-direction: column;
+}
+
+.bar-chart-entry {
+    width: auto;
     background-color: var(--primary-color);
     -unity-text-align: upper-center;
 }

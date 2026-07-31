@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Leaframe.Extensions;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,6 +10,19 @@ namespace Leaframe.Charts
     [UxmlElement]
     public abstract partial class AxesChart : Chart
     {
+        private bool _drawVerticalSteps = true;
+
+        [UxmlAttribute]
+        public bool DrawVerticalSteps
+        {
+            get => _drawVerticalSteps;
+            set
+            {
+                _drawVerticalSteps = value;
+                MarkDirtyRepaint();
+            }
+        }
+
         private bool _displayHorizontalLabels = true;
 
         [UxmlAttribute]
@@ -42,8 +56,8 @@ namespace Leaframe.Charts
             get
             {
                 var content = contentRect;
-                content.x += (DisplayVerticalLabels ? 100 : 25);
-                content.width -= (DisplayVerticalLabels ? 100 : 25);
+                content.x += (DisplayVerticalLabels ? _verticalLabelSize : 25);
+                content.width -= (DisplayVerticalLabels ? _verticalLabelSize : 25);
                 content.height -= (DisplayHorizontalLabels ? 50 : 25);
                 return content;
             }
@@ -53,6 +67,8 @@ namespace Leaframe.Charts
 
         protected Color _axeLineColor = Color.black;
         protected Color _stepLineColor = new Color(0, 0, 0, 0.2f);
+        protected float _stepLineOffset = -20;
+        protected float _verticalLabelSize = 100;
 
         protected static readonly CustomStyleProperty<Color> _axeLineColorProperty =
             new("--axe-line-color");
@@ -60,9 +76,16 @@ namespace Leaframe.Charts
         protected static readonly CustomStyleProperty<Color> _stepLineColorProperty =
             new("--step-line-color");
 
+        protected static readonly CustomStyleProperty<float> _stepLineOffsetProperty =
+            new("--step-line-offset");
+
+        protected static readonly CustomStyleProperty<float> _verticalLabelSizeProperty =
+            new("--vertical-label-size");
+
         protected const string AxesChartClassname = "axes-chart";
         protected const string AxesChartLabelsContainerClassname = "axes-chart__labels-container";
         protected const string ChartLabelClassname = "chart-label";
+        protected const string VerticalChartLabelClassname = "vertical-chart-label";
         protected const string HorizontalChartLabelClassname = "horizontal-chart-label";
 
         protected const int AxeLineWidth = 5;
@@ -86,6 +109,10 @@ namespace Leaframe.Charts
         {
             evt.customStyle.TryGetValue(_axeLineColorProperty, out _axeLineColor);
             evt.customStyle.TryGetValue(_stepLineColorProperty, out _stepLineColor);
+            evt.customStyle.TryGetValue(_verticalLabelSizeProperty, out _verticalLabelSize);
+            if (evt.customStyle.TryGetValue(_stepLineOffsetProperty, out float stepLineOffset))
+                _stepLineOffset = stepLineOffset;
+
             MarkDirtyRepaint();
         }
 
@@ -106,6 +133,8 @@ namespace Leaframe.Charts
         {
             if (!DisplayVerticalLabels) return;
 
+            _labelsContainer.style.width = _verticalLabelSize;
+
             (int minStep, int maxStep) = ComputeMinMaxSteps();
             int numberOfSteps = DetermineNumberOfSteps();
             for (int i = 0; i <= numberOfSteps; ++i)
@@ -113,10 +142,12 @@ namespace Leaframe.Charts
                 var y = Mathf.Lerp(rect.yMax, rect.yMin, (float) i / numberOfSteps);
                 var label = new Label($"{Mathf.Lerp(minStep, maxStep, (float) i / numberOfSteps):###,###,##0}");
                 label.AddToClassList(ChartLabelClassname);
+                label.AddToClassList(VerticalChartLabelClassname);
                 _labelsContainer.Add(label);
                 label.style.position = Position.Absolute;
                 //label.style.top = Mathf.RoundToInt(y - 20);
                 label.style.top = Mathf.RoundToInt(y);
+                // label.style.width = _verticalLabelSize;
             }
         }
 
@@ -197,7 +228,7 @@ namespace Leaframe.Charts
             // Draw horizontal
             float zeroHeight = min < 0 ? rect.height * Mathf.Abs((float) min) / delta : 0;
             zeroHeight = rect.yMax - zeroHeight;
-            painter.MoveTo(new Vector2(rect.xMin, zeroHeight));
+            painter.MoveTo(new Vector2(contentRect.xMin, zeroHeight));
             painter.LineTo(new Vector2(rect.xMax, zeroHeight));
             painter.Stroke();
         }
@@ -214,18 +245,22 @@ namespace Leaframe.Charts
             {
                 var y = Mathf.Lerp(rect.yMax, rect.yMin, (float) i / numberOfSteps);
                 painter.BeginPath();
-                painter.MoveTo(new Vector2(rect.xMin - 20, y));
+                painter.MoveTo(new Vector2(rect.xMin + _stepLineOffset, y));
                 painter.LineTo(new Vector2(rect.xMax, y));
                 painter.Stroke();
             }
 
-            for (int j = 0; j < _dataSet[0].Count; ++j)
+            // Vertical Steps
+            if (DrawVerticalSteps)
             {
-                var x = Mathf.Lerp(rect.xMin, rect.xMax, (float) j / (_dataSet[0].Count - 1));
-                painter.BeginPath();
-                painter.MoveTo(new Vector2(x, rect.yMin));
-                painter.LineTo(new Vector2(x, rect.yMax + 20));
-                painter.Stroke();
+                for (int j = 0; j < _dataSet[0].Count; ++j)
+                {
+                    var x = Mathf.Lerp(rect.xMin, rect.xMax, (float) j / (_dataSet[0].Count - 1));
+                    painter.BeginPath();
+                    painter.MoveTo(new Vector2(x, rect.yMin));
+                    painter.LineTo(new Vector2(x, rect.yMax + 20));
+                    painter.Stroke();
+                }
             }
         }
 
