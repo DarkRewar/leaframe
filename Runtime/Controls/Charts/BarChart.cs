@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UIElements;
@@ -10,13 +11,17 @@ namespace Leaframe.Charts
     public partial class BarChart : AxesChart
     {
         protected VisualElement _barsContainer;
+        protected VisualElement _horizontalLabelsContainer;
 
         private const string BarChartClassname = "bar-chart";
         private const string BarChartContainerClassname = "bar-chart-container";
+        private const string BarChartLabelContainerClassname = "bar-chart-label-container";
         private const string BarChartColumnClassname = "bar-chart-column";
         private const string BarChartEntryClassname = "bar-chart-entry";
         private const string BarChartEntryLabelClassname = "bar-chart-entry__label";
         private const string BarChartEntryValueClassname = "bar-chart-entry__value";
+        private const string BarChartHorizontalLabelClassname = "bar-chart__horizontal-label";
+        private const string BarChartHorizontalLabelHoverClassname = "bar-chart__horizontal-label--hover";
 
         public BarChart()
         {
@@ -25,6 +30,10 @@ namespace Leaframe.Charts
             _barsContainer = new VisualElement();
             _barsContainer.AddToClassList(BarChartContainerClassname);
             Add(_barsContainer);
+
+            _horizontalLabelsContainer = new VisualElement();
+            _horizontalLabelsContainer.AddToClassList(BarChartLabelContainerClassname);
+            Add(_horizontalLabelsContainer);
 
             // This is a default dataset for UI Builder purpose.
             // Replace the DataSet value at runtime.
@@ -52,7 +61,7 @@ namespace Leaframe.Charts
 
         private void DrawBars()
         {
-            float axeMidSize = AxeLineWidth / 2f;
+            float axeMidSize = _axeLineWidth / 2f;
             var chartRect = ChartRect;
             // _barsContainer.style.width = chartRect.width;
             // _barsContainer.style.height = chartRect.height;
@@ -60,7 +69,7 @@ namespace Leaframe.Charts
 
             var barContentHeight = chartRect.height;
             var barContentPaddingBottom = contentRect.height - chartRect.height;
-            _barsContainer.style.paddingBottom = barContentPaddingBottom;
+            _barsContainer.style.paddingBottom = barContentPaddingBottom - axeMidSize;
             // _barsContainer.style.paddingBottom = contentRect.height - ChartRect.height + AxeLineWidth / 2;
 
             _barsContainer.Clear();
@@ -70,6 +79,7 @@ namespace Leaframe.Charts
 
             var chartColumns = ComputeBarData();
 
+            int i = 0;
             foreach (var chartColumn in chartColumns)
             {
                 VisualElement column = new VisualElement();
@@ -79,6 +89,9 @@ namespace Leaframe.Charts
 
                 float marginBottom = zeroHeight + barContentHeight * chartColumn.NegativeSum / minMaxDelta;
                 column.style.marginBottom = marginBottom;
+                column.RegisterCallback<MouseEnterEvent, int>(SetHoveredLabel, i, TrickleDown.TrickleDown);
+                column.RegisterCallback<MouseOutEvent, int>(ClearHoverLabel, i, TrickleDown.TrickleDown);
+                i++;
 
                 foreach (ChartData entry in chartColumn.ChartData)
                 {
@@ -87,18 +100,7 @@ namespace Leaframe.Charts
 
                     float heightRatio = Mathf.Abs((float) entry.Value) / minMaxDelta;
                     dataElement.style.height = new StyleLength(Mathf.Lerp(0, barContentHeight, heightRatio));
-                    // dataElement.style.marginBottom = new Length(zeroHeight, LengthUnit.Percent);
-                    // dataElement.style.marginBottom = zeroHeight;
                     dataElement.style.backgroundColor = DataSet[0].GetColor(entry);
-                    if (entry.Value < 0)
-                    {
-                        // dataElement.style.paddingTop = axeMidSize;
-                        // dataElement.style.translate = new Translate(0, new Length(100, LengthUnit.Percent));
-                    }
-                    else
-                    {
-                        // dataElement.style.paddingBottom = axeMidSize;
-                    }
 
                     var dataValue = new Label(entry.Value.ToString());
                     dataValue.AddToClassList(BarChartEntryValueClassname);
@@ -107,6 +109,16 @@ namespace Leaframe.Charts
                     column.Add(dataElement);
                 }
             }
+        }
+
+        private void SetHoveredLabel(MouseEnterEvent _, int labelIndex)
+        {
+            _horizontalLabelsContainer[labelIndex].AddToClassList(BarChartHorizontalLabelHoverClassname);
+        }
+
+        private void ClearHoverLabel(MouseOutEvent _, int labelIndex)
+        {
+            _horizontalLabelsContainer[labelIndex].RemoveFromClassList(BarChartHorizontalLabelHoverClassname);
         }
 
         private List<BarChartColumn> ComputeBarData()
@@ -146,6 +158,56 @@ namespace Leaframe.Charts
         {
             base.OnCursorPositionChanged(cursorPosition);
             MarkDirtyRepaint();
+        }
+
+        protected override void CreateHorizontalLabels(Rect rect)
+        {
+            if (!DisplayHorizontalLabels) return;
+
+            _horizontalLabelsContainer.Clear();
+            _horizontalLabelsContainer.style.marginLeft = ChartRect.x;
+
+            int labelCount = Labels.Count;
+            Length flexBasis = new Length(100f / labelCount, LengthUnit.Percent);
+            for (int i = 0; i < labelCount; ++i)
+            {
+                var label = new Label(Labels[i]);
+                label.AddToClassList(ChartLabelClassname);
+                label.AddToClassList(HorizontalChartLabelClassname);
+                label.AddToClassList(BarChartHorizontalLabelClassname);
+                label.style.flexBasis = flexBasis;
+                _horizontalLabelsContainer.Add(label);
+            }
+
+            // if (!DisplayHorizontalLabels) return;
+            //
+            // int labelCount = Labels.Count;
+            // for (int i = 0; i < labelCount; ++i)
+            // {
+            //     var x = Mathf.Lerp(rect.xMin, rect.xMax, (float) i / (labelCount - 1));
+            //     var label = new Label(Labels[i]);
+            //     label.AddToClassList(ChartLabelClassname);
+            //     label.AddToClassList(HorizontalChartLabelClassname);
+            //     // _labelsContainer.Add(label);
+            //     _barsContainer[i].Add(label);
+            //     label.style.position = Position.Absolute;
+            //     label.style.top = rect.yMax + 25;
+            //     label.style.left = x;
+            //
+            //     label.schedule.Execute(_ =>
+            //     {
+            //         var labelRect = label.localBound;
+            //         if (labelRect.xMin < rect.xMin)
+            //             label.style.left = rect.xMin;
+            //         else if (labelRect.xMax > rect.xMax)
+            //             label.style.left = x - label.contentRect.width;
+            //         else
+            //             label.style.left = x - label.contentRect.width / 2;
+            //
+            //         // label.style.transformOrigin = new TransformOrigin(new Length(100, LengthUnit.Percent), new Length(50, LengthUnit.Percent));
+            //         // label.style.rotate = new Rotate(-45);
+            //     });
+            // }
         }
 
         public class BarChartColumn

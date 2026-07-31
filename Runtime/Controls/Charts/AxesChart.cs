@@ -51,6 +51,11 @@ namespace Leaframe.Charts
             }
         }
 
+        // private int _stepsMaxNumber = 0;
+
+        [UxmlAttribute]
+        public int StepsMaxNumber { get; set; }
+
         public virtual Rect ChartRect
         {
             get
@@ -58,17 +63,22 @@ namespace Leaframe.Charts
                 var content = contentRect;
                 content.x += (DisplayVerticalLabels ? _verticalLabelSize : 25);
                 content.width -= (DisplayVerticalLabels ? _verticalLabelSize : 25);
-                content.height -= (DisplayHorizontalLabels ? 50 : 25);
+                content.height -= (DisplayHorizontalLabels ? _horizontalLabelSize : 25);
                 return content;
             }
         }
 
         protected VisualElement _labelsContainer;
 
+        protected int _axeLineWidth = 5;
         protected Color _axeLineColor = Color.black;
         protected Color _stepLineColor = new Color(0, 0, 0, 0.2f);
         protected float _stepLineOffset = -20;
         protected float _verticalLabelSize = 100;
+        protected float _horizontalLabelSize = 50;
+
+        protected static readonly CustomStyleProperty<int> _axeLineWidthProperty =
+            new("--axe-line-width");
 
         protected static readonly CustomStyleProperty<Color> _axeLineColorProperty =
             new("--axe-line-color");
@@ -82,13 +92,15 @@ namespace Leaframe.Charts
         protected static readonly CustomStyleProperty<float> _verticalLabelSizeProperty =
             new("--vertical-label-size");
 
+        protected static readonly CustomStyleProperty<float> _horizontalLabelSizeProperty =
+            new("--horizontal-label-size");
+
         protected const string AxesChartClassname = "axes-chart";
         protected const string AxesChartLabelsContainerClassname = "axes-chart__labels-container";
         protected const string ChartLabelClassname = "chart-label";
         protected const string VerticalChartLabelClassname = "vertical-chart-label";
         protected const string HorizontalChartLabelClassname = "horizontal-chart-label";
 
-        protected const int AxeLineWidth = 5;
         protected const int StepLineWidth = 2;
 
         public AxesChart()
@@ -112,13 +124,27 @@ namespace Leaframe.Charts
             evt.customStyle.TryGetValue(_verticalLabelSizeProperty, out _verticalLabelSize);
             if (evt.customStyle.TryGetValue(_stepLineOffsetProperty, out float stepLineOffset))
                 _stepLineOffset = stepLineOffset;
+            if (evt.customStyle.TryGetValue(_axeLineWidthProperty, out int axeLineWidth))
+                _axeLineWidth = axeLineWidth;
+            if (evt.customStyle.TryGetValue(_horizontalLabelSizeProperty, out float horizontalLabelSize))
+                _horizontalLabelSize = horizontalLabelSize;
 
+            Debug.Log($"{GetType().FullName}.OnCustomStyleResolved()");
+            RefreshLabels();
             MarkDirtyRepaint();
         }
 
-        private void OnAttachedToPanel(AttachToPanelEvent evt) => RefreshLabels();
+        private void OnAttachedToPanel(AttachToPanelEvent evt)
+        {
+            Debug.Log($"{GetType().FullName}.OnAttachedToPanel()");
+            RefreshLabels();
+        }
 
-        private void OnGeometryChanged(GeometryChangedEvent _) => RefreshLabels();
+        private void OnGeometryChanged(GeometryChangedEvent _)
+        {
+            Debug.Log($"{GetType().FullName}.OnGeometryChanged()");
+            RefreshLabels();
+        }
 
         private void RefreshLabels()
         {
@@ -151,11 +177,12 @@ namespace Leaframe.Charts
             }
         }
 
-        private void CreateHorizontalLabels(Rect rect)
+        protected virtual void CreateHorizontalLabels(Rect rect)
         {
             if (!DisplayHorizontalLabels) return;
 
             int labelCount = Labels.Count;
+            float labelSize = _horizontalLabelSize * 0.2f;
             for (int i = 0; i < labelCount; ++i)
             {
                 var x = Mathf.Lerp(rect.xMin, rect.xMax, (float) i / (labelCount - 1));
@@ -164,22 +191,23 @@ namespace Leaframe.Charts
                 label.AddToClassList(HorizontalChartLabelClassname);
                 _labelsContainer.Add(label);
                 label.style.position = Position.Absolute;
-                label.style.top = rect.yMax + 25;
+                // label.style.top = rect.yMax + 25;
+                label.style.bottom = labelSize;
                 label.style.left = x;
 
-                label.schedule.Execute(_ =>
-                {
-                    var labelRect = label.localBound;
-                    if (labelRect.xMin < rect.xMin)
-                        label.style.left = rect.xMin;
-                    else if (labelRect.xMax > rect.xMax)
-                        label.style.left = x - label.contentRect.width;
-                    else
-                        label.style.left = x - label.contentRect.width / 2;
-
-                    // label.style.transformOrigin = new TransformOrigin(new Length(100, LengthUnit.Percent), new Length(50, LengthUnit.Percent));
-                    // label.style.rotate = new Rotate(-45);
-                });
+                // label.schedule.Execute(_ =>
+                // {
+                //     var labelRect = label.localBound;
+                //     if (labelRect.xMin < rect.xMin)
+                //         label.style.left = rect.xMin;
+                //     else if (labelRect.xMax > rect.xMax)
+                //         label.style.left = x - label.contentRect.width;
+                //     else
+                //         label.style.left = x - label.contentRect.width / 2;
+                //
+                //     // label.style.transformOrigin = new TransformOrigin(new Length(100, LengthUnit.Percent), new Length(50, LengthUnit.Percent));
+                //     // label.style.rotate = new Rotate(-45);
+                // });
             }
         }
 
@@ -215,7 +243,7 @@ namespace Leaframe.Charts
         private void DrawAxes(Painter2D painter)
         {
             painter.strokeColor = _axeLineColor;
-            painter.lineWidth = AxeLineWidth;
+            painter.lineWidth = _axeLineWidth;
             var (min, max) = ComputeMinMax();
             var delta = Mathf.Abs((float) min) + Mathf.Abs((float) max);
             var rect = ChartRect;
@@ -266,6 +294,7 @@ namespace Leaframe.Charts
 
         protected int DetermineNumberOfSteps()
         {
+            if (StepsMaxNumber > 0) return StepsMaxNumber;
             (double minValue, double maxValue) = ComputeMinMaxSteps();
             var total = maxValue - minValue;
             var unit = Mathf.FloorToInt(Mathf.Log10((float) (total + 1)));
@@ -279,6 +308,11 @@ namespace Leaframe.Charts
             return 10;
         }
 
-        protected override void OnDataSetChanged(List<ChartDataSet> dataSet) { }
+        protected override void OnDataSetChanged(List<ChartDataSet> dataSet)
+        {
+            var rect = ChartRect;
+            Debug.Log($"{GetType().FullName}.OnDataSetChanged() -> {rect}");
+            RefreshLabels();
+        }
     }
 }

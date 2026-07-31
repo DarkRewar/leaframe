@@ -31,6 +31,12 @@
 
 .horizontal-chart-label {
     width: auto;
+    margin: auto;
+}
+
+/* LINE CHART */
+.line-chart .horizontal-chart-label {
+    translate: -50% 0;
 }
 
 /* BAR CHART */
@@ -39,6 +45,17 @@
 }
 
 .bar-chart-container {
+    flex: 1;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-evenly;
+}
+
+.bar-chart-label-container {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
     flex: 1;
     flex-direction: row;
     align-items: flex-end;
@@ -64,6 +81,18 @@
 
 .bar-chart-entry__value {
     color: white;
+}
+
+.bar-chart__horizontal-label {
+    flex-grow: 1;
+    flex-shrink: 0;
+    -unity-text-align: middle-center;
+    transition: all 200ms ease-out;
+}
+
+.bar-chart__horizontal-label--hover {
+    -unity-font-style: bold;
+    scale: 1.1;
 }
 
 /* PIE CHART */

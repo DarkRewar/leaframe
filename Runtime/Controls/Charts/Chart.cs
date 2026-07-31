@@ -10,6 +10,7 @@ namespace Leaframe.Charts
     [UxmlObject]
     public partial class ChartDataSet : ICollection<ChartData>, IEnumerable<ChartData>, IEnumerable, INotifyBindablePropertyChanged
     {
+        [UxmlAttribute]
         public Color Color;
 
         private List<ChartData> _chartData = new List<ChartData>();

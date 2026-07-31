@@ -171,8 +171,6 @@ namespace Leaframe.Charts
             return (new(p1x, p1y), new(p2x, p2y));
         }
 
-        protected override void OnDataSetChanged(List<ChartDataSet> dataSet) { }
-
         protected override void OnCursorPositionChanged(Vector2 cursorPosition)
         {
             base.OnCursorPositionChanged(cursorPosition);
