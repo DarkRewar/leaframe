@@ -129,20 +129,17 @@ namespace Leaframe.Charts
             if (evt.customStyle.TryGetValue(_horizontalLabelSizeProperty, out float horizontalLabelSize))
                 _horizontalLabelSize = horizontalLabelSize;
 
-            Debug.Log($"{GetType().FullName}.OnCustomStyleResolved()");
             RefreshLabels();
             MarkDirtyRepaint();
         }
 
         private void OnAttachedToPanel(AttachToPanelEvent evt)
         {
-            Debug.Log($"{GetType().FullName}.OnAttachedToPanel()");
             RefreshLabels();
         }
 
         private void OnGeometryChanged(GeometryChangedEvent _)
         {
-            Debug.Log($"{GetType().FullName}.OnGeometryChanged()");
             RefreshLabels();
         }
 
@@ -310,8 +307,6 @@ namespace Leaframe.Charts
 
         protected override void OnDataSetChanged(List<ChartDataSet> dataSet)
         {
-            var rect = ChartRect;
-            Debug.Log($"{GetType().FullName}.OnDataSetChanged() -> {rect}");
             RefreshLabels();
         }
     }

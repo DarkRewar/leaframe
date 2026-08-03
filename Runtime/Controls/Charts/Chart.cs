@@ -136,6 +136,12 @@ namespace Leaframe.Charts
             get => _dataSet;
             set
             {
+                using (var chartDataEvent = ChangeEvent<List<ChartDataSet>>.GetPooled(_dataSet, value))
+                {
+                    chartDataEvent.target = this;
+                    this.SendEvent(chartDataEvent);
+                }
+
                 _dataSet = value;
                 if (Labels == default & _dataSet.Count > 0)
                     Labels = _dataSet[0].Select(data => data.Id).ToList();
