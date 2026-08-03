@@ -227,8 +227,8 @@ namespace Leaframe.Charts
             unit = (int) Math.Pow(10, unit);
             int minStep = unit * Mathf.FloorToInt((float) minValue / unit);
             int maxStep = unit * Mathf.CeilToInt((float) maxValue / unit);
-            minStep = (int) minValue == minStep ? minStep - unit : minStep;
-            maxStep = (int) maxValue == maxStep ? maxStep + unit : maxStep;
+            minStep = Mathf.Min(0, (int) minValue == minStep ? minStep - unit : minStep);
+            maxStep = Mathf.Max(0, (int) maxValue == maxStep ? maxStep + unit : maxStep);
             return (minStep, maxStep);
         }
 
