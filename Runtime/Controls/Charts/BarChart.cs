@@ -71,6 +71,8 @@ namespace Leaframe.Charts
                 return (0, 0);
             var min = _chartColumns.Min(col => col.NegativeSum);
             var max = _chartColumns.Max(col => col.PositiveSum);
+            if (OverrideMaximumStepValue)
+                max = Mathf.Min(MaximumStepValue, (float) max);
             return (min, max);
         }
 

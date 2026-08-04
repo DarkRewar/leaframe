@@ -56,6 +56,12 @@ namespace Leaframe.Charts
         [UxmlAttribute]
         public int StepsMaxNumber { get; set; }
 
+        [UxmlAttribute]
+        public bool OverrideMaximumStepValue { get; set; }
+
+        [UxmlAttribute]
+        public float MaximumStepValue { get; set; } = 0;
+
         public virtual Rect ChartRect { get; private set; }
 
         // public virtual Rect ChartRect
@@ -219,10 +225,17 @@ namespace Leaframe.Charts
 
         protected virtual (double minValue, double maxValue) ComputeMinMax()
         {
-            return _dataSet == null || _dataSet.Count == 0
-                ? (0, 0)
-                : (_dataSet.Min(set => set.Min(data => data.Value)),
-                    _dataSet.Max(set => set.Max(data => data.Value)));
+            double min = 0;
+            double max = 0;
+
+            if (_dataSet is not { Count: > 0 }) return (min, max);
+
+            min = _dataSet.Min(set => set.Min(data => data.Value));
+            max = _dataSet.Max(set => set.Max(data => data.Value));
+            if (OverrideMaximumStepValue)
+                max = Mathf.Min(MaximumStepValue, (float) max);
+
+            return (min, max);
         }
 
         protected (int minStep, int maxStep) ComputeMinMaxSteps()

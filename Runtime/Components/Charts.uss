@@ -3,6 +3,7 @@
     --chart-border-width: 0;
     width: auto;
     flex-grow: 1;
+    overflow: hidden;
 }
 
 .chart-label {
