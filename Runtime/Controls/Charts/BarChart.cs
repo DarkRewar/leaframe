@@ -13,6 +13,8 @@ namespace Leaframe.Charts
         protected VisualElement _barsContainer;
         protected VisualElement _horizontalLabelsContainer;
 
+        private List<BarChartColumn> _chartColumns;
+
         private const string BarChartClassname = "bar-chart";
         private const string BarChartContainerClassname = "bar-chart-container";
         private const string BarChartLabelContainerClassname = "bar-chart-label-container";
@@ -53,14 +55,27 @@ namespace Leaframe.Charts
 
             RegisterCallback<GeometryChangedEvent>(_ => DrawBars());
             RegisterCallback<AttachToPanelEvent>(_ => DrawBars());
+            RegisterCallback<CustomStyleResolvedEvent>(_ => DrawBars());
             DrawBars();
 
             //generateVisualContent += OnGenerateVisualContent;
             DisplayHorizontalLabels = false;
         }
 
+        protected override (double minValue, double maxValue) ComputeMinMax()
+        {
+            if (_chartColumns is not { Count: > 0 })
+                return (0, 0);
+            var min = _chartColumns.Min(col => col.NegativeSum);
+            var max = _chartColumns.Max(col => col.PositiveSum);
+            return (min, max);
+        }
+
         private void DrawBars()
         {
+            _barsContainer.Clear();
+            if (_dataSet == null) return;
+
             float axeMidSize = _axeLineWidth / 2f;
             var chartRect = ChartRect;
             // _barsContainer.style.width = chartRect.width;
@@ -72,16 +87,15 @@ namespace Leaframe.Charts
             _barsContainer.style.paddingBottom = barContentPaddingBottom - axeMidSize;
             // _barsContainer.style.paddingBottom = contentRect.height - ChartRect.height + AxeLineWidth / 2;
 
-            _barsContainer.Clear();
+            _chartColumns = ComputeBarData();
             (var min, var max) = ComputeMinMax();
             var minMaxDelta = Mathf.Abs((float) min) + Mathf.Abs((float) max);
             float zeroHeight = min < 0 ? barContentHeight * Mathf.Abs((float) min) / minMaxDelta : 0;
 
-            var chartColumns = ComputeBarData();
-
             int i = 0;
-            foreach (var chartColumn in chartColumns)
+            foreach (BarChartColumn chartColumn in _chartColumns)
             {
+                ChartDataSet chartDataSet = DataSet[chartColumn.DataSetIndex];
                 VisualElement column = new VisualElement();
                 column.dataSource = chartColumn;
                 column.AddToClassList(BarChartColumnClassname);
@@ -100,7 +114,7 @@ namespace Leaframe.Charts
 
                     float heightRatio = Mathf.Abs((float) entry.Value) / minMaxDelta;
                     dataElement.style.height = new StyleLength(Mathf.Lerp(0, barContentHeight, heightRatio));
-                    dataElement.style.backgroundColor = DataSet[0].GetColor(entry);
+                    dataElement.style.backgroundColor = chartDataSet.GetColor(entry);
 
                     var dataValue = new Label(entry.Value.ToString());
                     dataValue.AddToClassList(BarChartEntryValueClassname);
@@ -134,7 +148,7 @@ namespace Leaframe.Charts
 
                     if (barChartColumns.Count <= chartDataIndex)
                     {
-                        barChartColumn = new BarChartColumn();
+                        barChartColumn = new BarChartColumn(i);
                         barChartColumns.Add(barChartColumn);
                     }
                     else
@@ -142,6 +156,7 @@ namespace Leaframe.Charts
                         barChartColumn = barChartColumns[chartDataIndex];
                     }
 
+                    dataSet[chartDataIndex].Color = dataSet.GetColor(dataSet[chartDataIndex]);
                     barChartColumn.ChartData.Add(dataSet[chartDataIndex]);
                 }
             }
@@ -210,26 +225,33 @@ namespace Leaframe.Charts
             // }
         }
 
+        protected override void OnDataSetChanged(List<ChartDataSet> dataSet)
+        {
+            base.OnDataSetChanged(dataSet);
+            DrawBars();
+        }
+
         public class BarChartColumn
         {
-            // public VisualElement Column;
             public readonly List<ChartData> ChartData = new();
 
-            public float MaxValue { get; private set; } = 0;
-            public float MinValue { get; private set; } = 0;
+            public int DataSetIndex { get; } = 0;
+
+            public float PositiveSum { get; private set; } = 0;
 
             public float NegativeSum { get; private set; } = 0;
 
-            public float Delta => Mathf.Abs(MaxValue) + Mathf.Abs(MinValue);
+            public float Delta => Mathf.Abs(PositiveSum) + Mathf.Abs(NegativeSum);
+
+            public BarChartColumn(int dataSetIndex) => DataSetIndex = dataSetIndex;
 
             public void UpdateValues()
             {
                 NegativeSum = 0;
                 foreach (ChartData chartData in ChartData)
                 {
-                    MaxValue = Mathf.Max(MaxValue, (float) chartData.Value);
-                    MinValue = Mathf.Min(MaxValue, (float) chartData.Value);
                     if (chartData.Value < 0) NegativeSum += (float) chartData.Value;
+                    if (chartData.Value > 0) PositiveSum += (float) chartData.Value;
                 }
 
                 ChartData.Sort((x, y) => -x.Value.CompareTo(y.Value));

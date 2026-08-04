@@ -56,17 +56,20 @@ namespace Leaframe.Charts
         [UxmlAttribute]
         public int StepsMaxNumber { get; set; }
 
-        public virtual Rect ChartRect
-        {
-            get
-            {
-                var content = contentRect;
-                content.x += (DisplayVerticalLabels ? _verticalLabelSize : 25);
-                content.width -= (DisplayVerticalLabels ? _verticalLabelSize : 25);
-                content.height -= (DisplayHorizontalLabels ? _horizontalLabelSize : 25);
-                return content;
-            }
-        }
+        public virtual Rect ChartRect { get; private set; }
+
+        // public virtual Rect ChartRect
+        // {
+        //     
+        //     get
+        //     {
+        //         var content = contentRect;
+        //         content.x += (DisplayVerticalLabels ? _verticalLabelSize : 25);
+        //         content.width -= (DisplayVerticalLabels ? _verticalLabelSize : 25);
+        //         content.height -= (DisplayHorizontalLabels ? _horizontalLabelSize : 25);
+        //         return content;
+        //     }
+        // }
 
         protected VisualElement _labelsContainer;
 
@@ -140,6 +143,12 @@ namespace Leaframe.Charts
 
         private void OnGeometryChanged(GeometryChangedEvent _)
         {
+            var content = contentRect;
+            content.x += (DisplayVerticalLabels ? _verticalLabelSize : 25);
+            content.width -= (DisplayVerticalLabels ? _verticalLabelSize : 25);
+            content.height -= (DisplayHorizontalLabels ? _horizontalLabelSize : 25);
+            ChartRect = content;
+
             RefreshLabels();
         }
 
@@ -208,7 +217,7 @@ namespace Leaframe.Charts
             }
         }
 
-        protected (double minValue, double maxValue) ComputeMinMax()
+        protected virtual (double minValue, double maxValue) ComputeMinMax()
         {
             return _dataSet == null || _dataSet.Count == 0
                 ? (0, 0)

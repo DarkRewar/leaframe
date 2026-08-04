@@ -143,10 +143,10 @@ namespace Leaframe.Charts
                 }
 
                 _dataSet = value;
-                if (Labels == default & _dataSet.Count > 0)
+                if (Labels == default & _dataSet is { Count: > 0 })
                     Labels = _dataSet[0].Select(data => data.Id).ToList();
-                MarkDirtyRepaint();
                 OnDataSetChanged(_dataSet);
+                MarkDirtyRepaint();
             }
         }
 
