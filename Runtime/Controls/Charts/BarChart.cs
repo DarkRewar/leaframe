@@ -10,6 +10,9 @@ namespace Leaframe.Charts
     [UxmlElement(libraryPath = "Leaframe/Charts")]
     public partial class BarChart : AxesChart
     {
+        [UxmlAttribute]
+        public bool SortData = true;
+
         protected VisualElement _barsContainer;
         protected VisualElement _horizontalLabelsContainer;
 
@@ -163,7 +166,7 @@ namespace Leaframe.Charts
 
             foreach (BarChartColumn barChartColumn in barChartColumns)
             {
-                barChartColumn.UpdateValues();
+                barChartColumn.UpdateValues(SortData);
             }
 
             return barChartColumns;
@@ -245,7 +248,7 @@ namespace Leaframe.Charts
 
             public BarChartColumn(int dataSetIndex) => DataSetIndex = dataSetIndex;
 
-            public void UpdateValues()
+            public void UpdateValues(bool sortData = true)
             {
                 NegativeSum = 0;
                 foreach (ChartData chartData in ChartData)
@@ -254,7 +257,8 @@ namespace Leaframe.Charts
                     if (chartData.Value > 0) PositiveSum += (float) chartData.Value;
                 }
 
-                ChartData.Sort((x, y) => -x.Value.CompareTo(y.Value));
+                if (sortData)
+                    ChartData.Sort((x, y) => -x.Value.CompareTo(y.Value));
             }
         }
     }
