@@ -102,6 +102,7 @@ namespace Leaframe.Charts
             {
                 ChartDataSet chartDataSet = DataSet[chartColumn.DataSetIndex];
                 VisualElement column = new VisualElement();
+                column.name = $"BarChartColumn-{i}";
                 column.dataSource = chartColumn;
                 column.AddToClassList(BarChartColumnClassname);
                 _barsContainer.Add(column);
