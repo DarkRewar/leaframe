@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Leaframe.Runtime.Events;
 using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UIElements;
@@ -128,6 +129,12 @@ namespace Leaframe.Charts
 
                     column.Add(dataElement);
                 }
+            }
+
+            using (var barChartUpdatedEvent = BarChartUpdatedEvent.GetPooled())
+            {
+                barChartUpdatedEvent.target = this;
+                this.SendEvent(barChartUpdatedEvent);
             }
         }
 
