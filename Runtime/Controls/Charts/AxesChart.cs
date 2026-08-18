@@ -62,6 +62,12 @@ namespace Leaframe.Charts
         [UxmlAttribute]
         public float MaximumStepValue { get; set; } = 0;
 
+        [UxmlAttribute]
+        public bool OverrideMinimumStepValue { get; set; }
+
+        [UxmlAttribute]
+        public float MinimumStepValue { get; set; } = 0;
+
         public virtual Rect ChartRect { get; private set; }
 
         // public virtual Rect ChartRect
