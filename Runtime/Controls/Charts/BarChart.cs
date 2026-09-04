@@ -120,7 +120,7 @@ namespace Leaframe.Charts
                     dataElement.AddToClassList(BarChartEntryClassname);
 
                     float heightRatio = Mathf.Abs((float) entry.Value) / minMaxDelta;
-                    dataElement.style.height = new StyleLength(Mathf.Lerp(0, barContentHeight, heightRatio));
+                    dataElement.style.height = new StyleLength(Mathf.LerpUnclamped(0, barContentHeight, heightRatio));
                     dataElement.style.backgroundColor = chartDataSet.GetColor(entry);
 
                     var dataValue = new Label(entry.Value.ToString());
@@ -261,6 +261,7 @@ namespace Leaframe.Charts
             public void UpdateValues(bool sortData = true)
             {
                 NegativeSum = 0;
+                PositiveSum = 0;
                 foreach (ChartData chartData in ChartData)
                 {
                     if (chartData.Value < 0) NegativeSum += (float) chartData.Value;
